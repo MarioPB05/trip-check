@@ -1,0 +1,7 @@
+{
+  "name": "Trip Check",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
