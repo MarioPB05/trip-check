@@ -35,12 +35,13 @@
             "prefix": "app",
             "style": "camelCase"
           }
-        ]
+        ],
+        "prettier/prettier": ["error", { "tabWidth": 2, "useTabs": false }]
       }
     },
     {
       "files": ["*.html"],
-      "extends": ["plugin:@angular-eslint/template/recommended"],
+      "extends": ["plugin:@angular-eslint/template/recommended", "plugin:prettier/recommended"],
       "rules": {}
     }
   ]
