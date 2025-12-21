@@ -1,0 +1,19 @@
+<div class="quantity-counter">
+  <app-trip-button
+    [fill]="true"
+    type="danger"
+    (handleClick)="decrement()"
+    [disabled]="quantity < min"
+  >
+    <lucide-icon [img]="MinusIcon" class="my-icon"></lucide-icon>
+  </app-trip-button>
+  <input
+    type="number"
+    [class.invalid]="isInvalid"
+    [value]="quantity"
+    (focusout)="onInputChange($event)"
+  />
+  <app-trip-button [fill]="true" type="tertiary" (handleClick)="increment()">
+    <lucide-icon [img]="PlusIcon" class="my-icon"></lucide-icon>
+  </app-trip-button>
+</div>
