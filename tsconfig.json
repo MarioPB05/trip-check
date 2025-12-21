@@ -22,6 +22,7 @@
     "skipLibCheck": true,
     "useDefineForClassFields": false,
     "paths": {
+      "@core/*": ["src/app/core/*"],
       "@features/*": ["src/app/features/*"]
     }
   },
