@@ -1,4 +1,4 @@
-export type ButtonType =
+export type AppColors =
   | 'primary'
   | 'secondary'
   | 'tertiary'

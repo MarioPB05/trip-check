@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { NgStyle } from '@angular/common';
-import { ButtonType } from '../../../../core/types/colors.types';
+import { AppColors } from '@core/types/colors.types';
 
 @Component({
   selector: 'app-trip-button',
@@ -9,13 +9,13 @@ import { ButtonType } from '../../../../core/types/colors.types';
   imports: [NgStyle],
 })
 export class TripButtonComponent {
-  @Input() type: ButtonType = 'primary';
+  @Input() type: AppColors = 'primary';
   @Input() class: string = '';
   @Input() fill: boolean = false;
   @Input() disabled: boolean = false;
   @Output() handleClick = new EventEmitter<Event>();
 
-  typeColors: { [key in ButtonType]: string } = {
+  typeColors: { [key in AppColors]: string } = {
     primary: 'var(--ion-color-primary)',
     secondary: 'var(--ion-color-secondary)',
     tertiary: 'var(--ion-color-tertiary)',
