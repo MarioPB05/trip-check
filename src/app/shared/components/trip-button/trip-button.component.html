@@ -1,0 +1,12 @@
+<button
+  [ngStyle]="{
+    'background-color': fill ? typeColors[type] : 'transparent',
+    color: fill ? 'var(--ion-color-light)' : typeColors[type],
+    border: fill ? 'none' : '2px solid ' + typeColors[type],
+    opacity: disabled ? '0.6' : '1',
+  }"
+  [disabled]="disabled"
+  (click)="handleClick.emit()"
+>
+  <ng-content />
+</button>

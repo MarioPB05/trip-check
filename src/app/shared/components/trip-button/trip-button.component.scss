@@ -1,0 +1,8 @@
+button {
+  padding: 10px;
+  border-radius: 0.3rem;
+}
+
+button:active {
+  filter: brightness(1.2);
+}
