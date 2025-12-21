@@ -107,3 +107,44 @@
   --ion-item-background: var(--ion-color-dark-gray);
   --ion-item-color: var(--ion-color-light);
 }
+
+h1 {
+  color: var(--ion-color-primary);
+  font-size: 2rem;
+  font-weight: bold;
+}
+
+h2 {
+  color: var(--ion-color-primary);
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+h3 {
+  color: var(--ion-color-light);
+  font-size: 1.5rem;
+  font-weight: 500;
+}
+
+input {
+  color: var(--ion-color-light);
+  border: 1px solid var(--ion-color-dark-gray);
+  background: transparent;
+  padding: 0.5rem 0.5rem;
+  border-radius: 0.3rem;
+}
+
+input::placeholder {
+  color: var(--ion-color-light);
+  opacity: 0.5;
+}
+
+input.error {
+  border-color: var(--ion-color-danger);
+}
+
+input:focus {
+  border-color: var(--ion-color-primary);
+  outline: none;
+  box-shadow: 0 0 5px var(--ion-color-primary);
+}
