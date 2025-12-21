@@ -28,5 +28,4 @@ export class TripButtonComponent {
     dark: 'var(--ion-color-dark)',
   };
 
-  constructor() {}
 }
