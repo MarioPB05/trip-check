@@ -13,7 +13,7 @@ export class QuantityCounterComponent {
   protected readonly MinusIcon = MinusIcon;
 
   @Input() min: number = 0;
-  @Output() quantityChange: any = new EventEmitter<number>();
+  @Output() quantityChange = new EventEmitter<number>();
 
   protected quantity: number = 1;
   protected isInvalid: boolean = false;
@@ -39,8 +39,8 @@ export class QuantityCounterComponent {
     this.isInvalid = isNaN(value) || value < this.min || value > this.max;
   }
 
-  onInputChange(event: any) {
-    const value = event.target.value;
+  onInputChange(event: Event) {
+    const value = (event.target as HTMLInputElement).value;
     const numericValue = Number(value);
     this.setInvalidity(numericValue);
 
