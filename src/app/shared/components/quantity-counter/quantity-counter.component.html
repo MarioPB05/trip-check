@@ -3,7 +3,7 @@
     [fill]="true"
     type="danger"
     (handleClick)="decrement()"
-    [disabled]="quantity < min"
+    [disabled]="quantity === min"
   >
     <lucide-icon [img]="MinusIcon" class="my-icon"></lucide-icon>
   </app-trip-button>
@@ -15,7 +15,12 @@
     [value]="quantity"
     (focusout)="onInputChange($event)"
   />
-  <app-trip-button [fill]="true" type="tertiary" (handleClick)="increment()">
+  <app-trip-button
+    [fill]="true"
+    type="tertiary"
+    (handleClick)="increment()"
+    [disabled]="quantity === max"
+  >
     <lucide-icon [img]="PlusIcon" class="my-icon"></lucide-icon>
   </app-trip-button>
 </div>
