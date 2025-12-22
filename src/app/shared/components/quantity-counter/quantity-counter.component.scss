@@ -1,0 +1,17 @@
+.quantity-counter {
+  display: flex;
+  align-items: center;
+  height: 50px;
+  margin: 20px;
+
+  input {
+    height: 100%;
+    width: 4rem;
+    text-align: center;
+  }
+
+  input.invalid {
+    border-top: 2px solid red;
+    border-bottom: 2px solid red;
+  }
+}

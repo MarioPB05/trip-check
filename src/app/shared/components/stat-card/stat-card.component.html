@@ -1,0 +1,8 @@
+<div class="stat-card" [ngClass]="data.description ? 'stat-card-expanded' : 'stat-card-compact'">
+  <h3 class="value">{{ data.value }}</h3>
+  <p class="title">{{ data.title }}</p>
+
+  @if (data.description) {
+    <p class="description">{{ data.description }}</p>
+  }
+</div>

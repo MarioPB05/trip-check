@@ -3,6 +3,6 @@ button {
   border-radius: 0.3rem;
 }
 
-button:active {
+button:enabled:active {
   filter: brightness(1.2);
 }
