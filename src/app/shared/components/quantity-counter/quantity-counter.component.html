@@ -8,7 +8,9 @@
     <lucide-icon [img]="MinusIcon" class="my-icon"></lucide-icon>
   </app-trip-button>
   <input
-    type="number"
+    type="text"
+    inputmode="numeric"
+    pattern="[0-9]*"
     [class.invalid]="isInvalid"
     [value]="quantity"
     (focusout)="onInputChange($event)"
