@@ -1,0 +1,9 @@
+<div class="item-card" (click)="handleClick.emit(item)">
+  <span class="item-icon">{{ item.emoji }}</span>
+
+  @if (quantity > 0) {
+    <span class="item-quantity-badge">{{ quantity }}</span>
+  }
+
+  <span class="item-title">{{ item.name }}</span>
+</div>
