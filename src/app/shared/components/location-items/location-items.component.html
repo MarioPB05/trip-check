@@ -1,0 +1,20 @@
+<div class="location-container">
+  <div class="location-header">
+    <h3>{{ location.name }}</h3>
+
+    <div class="location-toolbar">
+      <ng-content></ng-content>
+    </div>
+  </div>
+
+  <div class="location-separator"></div>
+
+  <div class="location-items-carrousel">
+    <div class="carrousel-items">
+      @for (locationItem of items; track locationItem.item.id) {
+        <app-item-card [item]="locationItem.item" [quantity]="locationItem.quantity" />
+      }
+    </div>
+    <div class="carrousel-shadow"></div>
+  </div>
+</div>

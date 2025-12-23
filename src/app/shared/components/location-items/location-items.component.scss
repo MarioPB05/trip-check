@@ -1,0 +1,60 @@
+.location-container {
+  width: 100%;
+  margin: 1rem 0;
+  padding: 1rem;
+
+  .location-header {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+
+    h3 {
+      margin: 0;
+      padding-left: 0.8rem;
+      font-weight: 500 !important;
+    }
+
+    .location-toolbar {
+      display: flex;
+      flex-direction: row;
+      gap: 0.5rem;
+      align-items: center;
+    }
+  }
+
+  .location-separator {
+    width: 100%;
+    height: 2px;
+    background-color: var(--ion-color-light-blue);
+    margin-top: 0.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .location-items-carrousel {
+    position: relative;
+
+    .carrousel-items {
+      width: 100%;
+      height: auto;
+      display: flex;
+      flex-direction: row;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      -webkit-overflow-scrolling: touch;
+      gap: 1rem;
+      padding: 1rem 2.5rem 1rem 0;
+    }
+
+    .carrousel-shadow {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      right: 0;
+      width: 60px;
+      pointer-events: none;
+      background: linear-gradient(to left, var(--ion-color-dark), transparent);
+    }
+  }
+}
