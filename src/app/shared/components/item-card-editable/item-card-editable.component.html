@@ -1,0 +1,14 @@
+<div class="item-card-editable">
+  <div class="item-info">
+    <img [ngSrc]="item.emojiUrl" class="item-icon" width="64" height="64" alt="" priority />
+    <p>{{ item.name }}</p>
+  </div>
+
+  <div class="item-counter">
+    @if (helpText) {
+      {{ helpText }}
+    }
+
+    <app-quantity-counter (quantityChange)="quantityChange.emit($event)" />
+  </div>
+</div>
