@@ -10,6 +10,7 @@ export interface Location {
 }
 
 export interface LocationItem {
+  id: number;
   startLocation: Location;
   endLocation: Location;
   item: Item;
