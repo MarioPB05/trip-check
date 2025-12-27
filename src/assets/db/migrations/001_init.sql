@@ -29,32 +29,32 @@ CREATE TABLE IF NOT EXISTS template (
 );
 
 CREATE TABLE IF NOT EXISTS template_item (
- template_id INTEGER NOT NULL,
- item_id INTEGER NOT NULL,
- quantity INTEGER NOT NULL DEFAULT 1,
- PRIMARY KEY (template_id, item_id),
+  template_id INTEGER NOT NULL,
+  item_id INTEGER NOT NULL,
+  quantity INTEGER NOT NULL DEFAULT 1,
+  PRIMARY KEY (template_id, item_id),
   FOREIGN KEY (template_id) REFERENCES template(id) ON DELETE CASCADE,
   FOREIGN KEY (item_id) REFERENCES item(id)
 );
 
 CREATE TABLE IF NOT EXISTS template_location (
- template_id INTEGER NOT NULL,
- location_id INTEGER NOT NULL,
- PRIMARY KEY (template_id, location_id),
+  template_id INTEGER NOT NULL,
+  location_id INTEGER NOT NULL,
+  PRIMARY KEY (template_id, location_id),
   FOREIGN KEY (template_id) REFERENCES template(id) ON DELETE CASCADE,
   FOREIGN KEY (location_id) REFERENCES location(id)
 );
 
 CREATE TABLE IF NOT EXISTS location_item (
- start_location_id INTEGER NOT NULL,
- end_location_id INTEGER NOT NULL,
- item_id INTEGER NOT NULL,
- quantity INTEGER NOT NULL DEFAULT 0,
- added INTEGER NOT NULL DEFAULT 0,
- lost INTEGER NOT NULL DEFAULT 0,
- uses INTEGER NOT NULL DEFAULT 0,
- PRIMARY KEY (start_location_id, end_location_id, item_id),
   id INTEGER PRIMARY KEY AUTOINCREMENT,
+  start_location_id INTEGER NOT NULL,
+  end_location_id INTEGER NOT NULL,
+  item_id INTEGER NOT NULL,
+  quantity INTEGER NOT NULL DEFAULT 0,
+  added INTEGER NOT NULL DEFAULT 0,
+  lost INTEGER NOT NULL DEFAULT 0,
+  uses INTEGER NOT NULL DEFAULT 0,
+  PRIMARY KEY (start_location_id, end_location_id, item_id),
   FOREIGN KEY (start_location_id) REFERENCES location(id),
   FOREIGN KEY (end_location_id) REFERENCES location(id),
   FOREIGN KEY (item_id) REFERENCES item(id)
