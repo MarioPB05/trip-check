@@ -11,7 +11,7 @@
 
   <div class="location-items-carrousel">
     <div class="carrousel-items">
-      @for (locationItem of items; track locationItem.item.id) {
+      @for (locationItem of items; track locationItem.id) {
         <app-item-card [item]="locationItem.item" [quantity]="locationItem.quantity" />
       }
     </div>
