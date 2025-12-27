@@ -1,6 +1,6 @@
 export interface Item {
   id: number;
-  emoji: string;
+  emojiUrl: string;
   name: string;
   deleted: boolean;
 }
