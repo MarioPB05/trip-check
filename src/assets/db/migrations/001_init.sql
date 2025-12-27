@@ -54,7 +54,6 @@ CREATE TABLE IF NOT EXISTS location_item (
   added INTEGER NOT NULL DEFAULT 0,
   lost INTEGER NOT NULL DEFAULT 0,
   uses INTEGER NOT NULL DEFAULT 0,
-  PRIMARY KEY (start_location_id, end_location_id, item_id),
   FOREIGN KEY (start_location_id) REFERENCES location(id),
   FOREIGN KEY (end_location_id) REFERENCES location(id),
   FOREIGN KEY (item_id) REFERENCES item(id)
