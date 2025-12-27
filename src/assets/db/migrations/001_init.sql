@@ -54,6 +54,7 @@ CREATE TABLE IF NOT EXISTS location_item (
  lost INTEGER NOT NULL DEFAULT 0,
  uses INTEGER NOT NULL DEFAULT 0,
  PRIMARY KEY (start_location_id, end_location_id, item_id),
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
   FOREIGN KEY (start_location_id) REFERENCES location(id),
   FOREIGN KEY (end_location_id) REFERENCES location(id),
   FOREIGN KEY (item_id) REFERENCES item(id)
