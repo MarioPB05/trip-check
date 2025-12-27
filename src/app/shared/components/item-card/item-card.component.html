@@ -1,5 +1,5 @@
 <div class="item-card" (click)="handleClick.emit(item)">
-  <span class="item-icon">{{ item.emoji }}</span>
+  <img [ngSrc]="item.emojiUrl" width="64" height="64" alt="" priority />
 
   @if (quantity > 0) {
     <span class="item-quantity-badge">{{ quantity }}</span>
