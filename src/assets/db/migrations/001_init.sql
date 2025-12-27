@@ -59,6 +59,15 @@ CREATE TABLE IF NOT EXISTS location_item (
   FOREIGN KEY (item_id) REFERENCES item(id)
 );
 
+CREATE TABLE IF NOT EXISTS item_summary (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  trip_id INTEGER NOT NULL,
+  location_item_id INTEGER NOT NULL,
+  status INTEGER NOT NULL,
+  FOREIGN KEY (trip_id) REFERENCES trip(id) ON DELETE CASCADE,
+  FOREIGN KEY (location_item_id) REFERENCES location_item(id)
+);
+
 CREATE INDEX IF NOT EXISTS idx_location_trip ON location(trip_id);
 CREATE INDEX IF NOT EXISTS idx_template_item_item ON template_item(item_id);
 CREATE INDEX IF NOT EXISTS idx_location_item_item ON location_item(item_id);
