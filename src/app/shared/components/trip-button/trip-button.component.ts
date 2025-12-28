@@ -10,7 +10,7 @@ import { AppColors } from '@core/types/colors.types';
 })
 export class TripButtonComponent {
   @Input() type: AppColors = 'primary';
-  @Input() class: string = '';
+  @Input() btnClass: string = '';
   @Input() fill: boolean = false;
   @Input() disabled: boolean = false;
   @Output() handleClick = new EventEmitter<Event>();
