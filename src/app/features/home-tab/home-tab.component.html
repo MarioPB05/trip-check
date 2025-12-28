@@ -1,13 +1,21 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title> Tab 1 </ion-title>
-  </ion-toolbar>
-</ion-header>
+<ion-content [fullscreen]="true" class="ion-padding">
+  <h4 class="current-trips-title">Próximo viaje</h4>
+  <div class="current-trips">
+    <!-- TODO: Hacer que solo aparezca si hay un viaje en curso y poner en plural si hay varios -->
+    <app-current-trip />
+  </div>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Tab 1</ion-title>
-    </ion-toolbar>
-  </ion-header>
+  <h1 class="main-title">Tus viajes</h1>
+  <div class="trips-container">
+    <div class="future-trips">
+      <app-future-trip />
+    </div>
+
+    <div class="past-trips">
+      <app-past-trip />
+      <app-past-trip />
+      <app-past-trip />
+      <app-past-trip />
+    </div>
+  </div>
 </ion-content>
