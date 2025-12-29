@@ -1,5 +1,5 @@
 import { inject, Injectable } from '@angular/core';
-import { TripRepository } from '@features/home-tab/repositories/trip.repository';
+import { TripRepository } from '@core/repositories/trip.repository';
 
 @Injectable({ providedIn: 'root' })
 export class TripService {
