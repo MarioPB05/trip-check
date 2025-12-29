@@ -2,8 +2,8 @@ import { Component, Input, OnInit } from '@angular/core';
 import { StatCardComponent } from '@shared/components/stat-card/stat-card.component';
 import { TripButtonComponent } from '@shared/components/trip-button/trip-button.component';
 import { ChevronRight, LucideAngularModule } from 'lucide-angular';
-import { CurrentTripDetails, Trip } from '@core/models/trip.model';
 import { CurrentTripDetails } from '@core/models/trip.model';
+import { DateUtility } from '@core/utilities/date.utility';
 
 @Component({
   selector: 'app-current-trip',
@@ -12,13 +12,19 @@ import { CurrentTripDetails } from '@core/models/trip.model';
   styleUrls: ['./current-trip.component.scss'],
   imports: [StatCardComponent, TripButtonComponent, LucideAngularModule],
 })
-export class CurrentTripComponent {
+export class CurrentTripComponent implements OnInit {
   protected readonly ChevronRight = ChevronRight;
 
   @Input() trip!: CurrentTripDetails;
   duration: string = '';
 
-  duration: string = '7 días';
+  ngOnInit() {
+    const startDate = DateUtility.stringToDate(this.trip.startDate);
+    const endDate = DateUtility.stringToDate(this.trip.endDate);
+
+    const tripDurationInDays = DateUtility.dateDifferenceInDays(startDate, endDate);
+    this.duration = DateUtility.daysToBestFormattedString(tripDurationInDays);
+  }
 
   onContinueClick() {
     console.log('Continuar viaje clicked');
