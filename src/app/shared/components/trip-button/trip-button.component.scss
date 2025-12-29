@@ -9,8 +9,11 @@ button:enabled:active {
   filter: brightness(1.2);
 }
 
-.center {
+.flex {
   display: flex;
+}
+
+.center {
   justify-content: center;
   align-items: center;
 }
