@@ -8,11 +8,6 @@
   align-items: center;
   gap: 1rem;
 
-  p,
-  h4 {
-    margin: 0;
-  }
-
   .trip-info {
     display: flex;
     flex-direction: column;
@@ -26,6 +21,5 @@
 
   .relative-start-date {
     color: var(--ion-color-medium-gray);
-    text-transform: capitalize;
   }
 }

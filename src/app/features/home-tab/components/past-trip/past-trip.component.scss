@@ -8,11 +8,6 @@
   align-items: center;
   gap: 1rem;
 
-  p,
-  h4 {
-    margin: 0;
-  }
-
   .trip-info {
     display: flex;
     flex-direction: column;
@@ -22,8 +17,5 @@
 
   .title {
     font-size: 1.2rem;
-  }
-
-  .view-details-button {
   }
 }
