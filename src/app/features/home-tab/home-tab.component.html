@@ -1,21 +1,52 @@
 <ion-content [fullscreen]="true" class="ion-padding">
-  <h4 class="current-trips-title">Próximo viaje</h4>
-  <div class="current-trips">
-    <!-- TODO: Hacer que solo aparezca si hay un viaje en curso y poner en plural si hay varios -->
-    <app-current-trip />
-  </div>
+  <div class="home-tab-container">
+    @if (currentTrips.length !== 0) {
+      <div class="current-trips-section">
+        <h4 class="current-trips-title">
+          {{ currentTrips.length > 1 ? 'Viajes en curso' : 'Viaje en curso' }}
+        </h4>
+        <div class="current-trips">
+          @for (trip of currentTrips; track trip.id) {
+            <app-current-trip [trip]="trip" />
+          }
+        </div>
+      </div>
+    }
 
-  <h1 class="main-title">Tus viajes</h1>
-  <div class="trips-container">
-    <div class="future-trips">
-      <app-future-trip />
+    <div class="trips-header">
+      <h1 class="main-title">Tus viajes</h1>
+
+      @if (futureTrips.length !== 0 || pastTrips.length !== 0) {
+        <app-trip-button
+          type="primary"
+          [fill]="true"
+          class="create-trip-button"
+          btnClass="flex center gap-2"
+        >
+          <lucide-icon [img]="Plus" style="height: 24px" />
+          Crear un viaje
+        </app-trip-button>
+      } @else {
+        <app-no-trips-alert />
+      }
     </div>
 
-    <div class="past-trips">
-      <app-past-trip />
-      <app-past-trip />
-      <app-past-trip />
-      <app-past-trip />
+    <div class="trips-container">
+      @if (futureTrips.length !== 0) {
+        <div class="future-trips">
+          @for (trip of futureTrips; track trip.id) {
+            <app-future-trip [trip]="trip" />
+          }
+        </div>
+      }
+
+      @if (pastTrips.length !== 0) {
+        <div class="past-trips">
+          @for (trip of pastTrips; track trip.id) {
+            <app-past-trip [trip]="trip" />
+          }
+        </div>
+      }
     </div>
   </div>
 </ion-content>
