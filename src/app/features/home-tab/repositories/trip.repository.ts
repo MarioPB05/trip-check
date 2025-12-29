@@ -56,8 +56,6 @@ export class TripRepository {
         ORDER BY t.trip_end_date DESC
       `);
 
-      console.log(res.values);
-
       return (
         (res.values?.map((row) =>
           this.formatDBRowToCurrentTripDetails(row),
