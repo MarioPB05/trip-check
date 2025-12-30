@@ -3,8 +3,8 @@
   <p class="details">{{ trip.destination }} - {{ duration }}</p>
 
   <div class="stats-container">
-    <app-stat-card [data]="{ title: 'Equipajes', value: trip.numberOfLocations.toString() }" />
-    <app-stat-card [data]="{ title: 'Objetos', value: trip.numberOfItems.toString() }" />
+    <app-stat-card title="Equipajes" [value]="trip.numberOfLocations.toString()" />
+    <app-stat-card title="Objetos" [value]="trip.numberOfItems.toString()" />
   </div>
 
   <app-trip-button
