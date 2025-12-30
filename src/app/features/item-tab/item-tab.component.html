@@ -1,13 +1,25 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title> Tab 1 </ion-title>
-  </ion-toolbar>
-</ion-header>
+<ion-content [fullscreen]="true" class="ion-padding">
+  <h1 class="main-title">Tus objetos</h1>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Tab 1</ion-title>
-    </ion-toolbar>
-  </ion-header>
+  <div class="toolbar">
+    <app-trip-button [fill]="true">Crear nuevo</app-trip-button>
+  </div>
+
+  @if (usedItems.length > 0) {
+    <div class="items-container">
+      @for (item of usedItems; track item.id) {
+        <app-item-card [item]="item" (handleClick)="openItemDetails($event)" />
+      }
+    </div>
+  }
+
+  @if (notUsedItems.length > 0) {
+    <h4>No usados</h4>
+
+    <div class="items-container">
+      @for (item of notUsedItems; track item.id) {
+        <app-item-card [item]="item" (handleClick)="openItemDetails($event)" />
+      }
+    </div>
+  }
 </ion-content>
