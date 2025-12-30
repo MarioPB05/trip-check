@@ -1,0 +1,30 @@
+.future-trip-card {
+  border: 1px solid var(--ion-color-dark-gray);
+  border-radius: 0.3rem;
+  padding: 1rem;
+
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: 1rem;
+
+  .trip-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 0.3rem;
+  }
+
+  .title {
+    font-size: 1.2rem;
+  }
+
+  .details {
+    font-size: 0.9rem;
+    color: var(--ion-color-medium);
+  }
+
+  .relative-start-date {
+    color: var(--ion-color-medium-gray);
+  }
+}

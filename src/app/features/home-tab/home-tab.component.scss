@@ -1,0 +1,37 @@
+
+.home-tab-container {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.current-trips-section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.current-trips-title {
+  font-size: 1.2rem;
+  color: var(--ion-color-medium);
+}
+
+.trips-header {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.trips-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.current-trips,
+.future-trips,
+.past-trips {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}

@@ -6,6 +6,7 @@
     opacity: disabled ? '0.6' : '1',
   }"
   [disabled]="disabled"
+  [class]="btnClass"
   (click)="handleClick.emit()"
 >
   <ng-content />

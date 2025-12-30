@@ -1,0 +1,37 @@
+
+.no-trips-alert-container {
+  padding: 1rem;
+  border: 1px solid var(--ion-color-dark-gray);
+
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  gap: 1rem;
+
+  h4, p {
+    margin: 0;
+  }
+
+  .no-trips-texts {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .no-trips-title {
+    font-size: 1.3rem;
+  }
+
+  .no-trips-subtitle {
+    color: var(--ion-color-medium);
+    font-size: 0.9rem;
+  }
+
+  .no-trips-icon {
+    padding: 0.5rem;
+  }
+
+  .create-trip-button {
+    grid-column: span 2;
+  }
+}

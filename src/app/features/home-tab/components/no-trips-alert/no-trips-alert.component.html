@@ -1,0 +1,19 @@
+<div class="no-trips-alert-container">
+  <lucide-icon
+    [img]="PlaneTakeoff"
+    class="no-trips-icon"
+    [size]="60"
+    [strokeWidth]="1"
+    color="var(--ion-color-warning)"
+  />
+
+  <div class="no-trips-texts">
+    <h4 class="no-trips-title">Aún no tienes viajes</h4>
+    <p class="no-trips-subtitle">Crea un viaje y mantén tu equipaje siempre bajo control.</p>
+  </div>
+
+  <app-trip-button type="secondary" class="create-trip-button" btnClass="flex center gap-2">
+    <lucide-icon [img]="Plus" style="height: 24px" />
+    Crear un viaje
+  </app-trip-button>
+</div>
