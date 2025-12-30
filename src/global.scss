@@ -83,3 +83,11 @@ input:focus {
   outline: none;
   box-shadow: 0 0 5px var(--ion-color-primary);
 }
+
+.item-options-modal {
+  --border-radius: 1.5rem;
+}
+
+lucide-icon {
+  display: contents;
+}

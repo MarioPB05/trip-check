@@ -1,0 +1,38 @@
+.item-card {
+  position: relative;
+  display: flex;
+  aspect-ratio: 1/1;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  min-width: 100px;
+  min-height: 100px;
+  max-width: 100px;
+  max-height: 100px;
+  justify-content: space-evenly;
+  align-items: center;
+  text-align: center;
+  border-radius: 0.5rem;
+  font-size: 12px;
+  border: 2px solid var(--ion-color-dark-gray);
+
+  .item-title {
+    width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    padding: 0 1rem;
+  }
+
+  .item-quantity-badge {
+    position: absolute;
+    top: -0.5rem;
+    right: -0.5rem;
+    background-color: var(--ion-color-tertiary);
+    color: var(--ion-color-light);
+    border-radius: 0.3rem;
+    padding: 0.2rem 0.6rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+  }
+}

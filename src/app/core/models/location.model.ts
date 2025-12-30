@@ -12,7 +12,7 @@ export interface Location {
 export interface LocationItem {
   id: number;
   startLocation: Location;
-  endLocation: Location;
+  endLocation: Location | null;
   item: Item;
   quantity: number;
   added: number;

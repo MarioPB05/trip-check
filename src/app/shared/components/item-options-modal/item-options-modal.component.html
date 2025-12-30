@@ -1,0 +1,29 @@
+@let item = locationItem.item;
+
+<ion-header class="ion-no-border">
+  <div class="item-container">
+    <img [ngSrc]="item.emojiUrl" width="64" height="64" alt="Item Emoji" />
+
+    <div class="item-info">
+      <span class="item-name">{{ item.name }}</span>
+      <span class="item-location">
+        {{ locationItem.endLocation?.name || locationItem.startLocation }}
+      </span>
+    </div>
+  </div>
+</ion-header>
+
+<ion-content class="ion-padding">
+  @for (option of menuItems; track $index) {
+    <div
+      class="menu-item"
+      [ngClass]="option.dangerous ? 'menu-item-danger' : ''"
+      (click)="option.action(item)"
+    >
+      <lucide-icon [img]="option.icon" />
+      <span>
+        {{ option.label }}
+      </span>
+    </div>
+  }
+</ion-content>
