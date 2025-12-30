@@ -66,7 +66,16 @@ export class DatabaseService {
   }
 
   private readonly migrations: Migration[] = [
-    { version: 1, sqlAssetPath: 'assets/db/migrations/001_init.sql', description: 'Init schema' },
+    {
+      version: 1,
+      sqlAssetPath: 'assets/db/migrations/001_init.sql',
+      description: 'Init schema',
+    },
+    {
+      version: 2,
+      sqlAssetPath: 'assets/db/migrations/002_seed_default_items.sql',
+      description: 'Seed default items',
+    },
   ];
 
   async init(): Promise<void> {
