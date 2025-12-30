@@ -8,5 +8,7 @@ import { NgClass } from '@angular/common';
   imports: [NgClass],
 })
 export class StatCardComponent {
-  @Input() data!: StatCard;
+  @Input() title: string = '';
+  @Input() value: string = '';
+  @Input() description: string = '';
 }
