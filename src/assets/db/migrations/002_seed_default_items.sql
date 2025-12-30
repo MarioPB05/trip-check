@@ -63,7 +63,7 @@ INSERT INTO item (name, emoji) VALUES
 ('Auriculares', '1f3a7'),
 
 -- Varios
-('Paraguas', '2602-fe0f'),
+('Paraguas', '2602'),
 ('Protector solar', '1f9f4'),
 ('Medicamentos', '1f48a'),
 ('Botella', '1f964'),
