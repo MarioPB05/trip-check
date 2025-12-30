@@ -1,8 +1,35 @@
 button {
   padding: 10px;
   border-radius: 0.3rem;
+  width: 100%;
+  font-size: 1rem;
 }
 
 button:enabled:active {
   filter: brightness(1.2);
+}
+
+.flex {
+  display: flex;
+}
+
+.center {
+  justify-content: center;
+  align-items: center;
+}
+
+.small {
+  font-size: 0.8rem;
+}
+
+.rounded-lg {
+  border-radius: 0.5rem;
+}
+
+.gap-1 {
+  gap: 0.25rem;
+}
+
+.gap-2 {
+  gap: 0.5rem;
 }

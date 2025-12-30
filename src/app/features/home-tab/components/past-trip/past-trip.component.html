@@ -1,0 +1,15 @@
+<div class="past-trip-card">
+  <div class="trip-info">
+    <h4 class="title">{{ trip.name }}</h4>
+    <p class="details">{{ trip.destination }} - {{ duration }}</p>
+  </div>
+
+  <app-trip-button
+    type="secondary"
+    class="view-details-button"
+    btnClass="flex center small"
+    (handleClick)="onViewDetailsClick()"
+  >
+    Ver detalles <lucide-icon [img]="ChevronRight" style="height: 24px" />
+  </app-trip-button>
+</div>

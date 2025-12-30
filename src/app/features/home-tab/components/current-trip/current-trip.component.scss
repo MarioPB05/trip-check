@@ -1,0 +1,31 @@
+.current-trip-card {
+  position: relative;
+  width: 100%;
+  padding: 1rem;
+  display: flex;
+  flex-flow: column;
+  border: 1px solid var(--ion-color-dark-gray);
+  border-radius: 0.3rem;
+
+  .title {
+    font-size: 1.4rem;
+  }
+
+  .details {
+    font-size: 0.9rem;
+    color: var(--ion-color-medium);
+    margin-top: 0.3rem;
+  }
+
+  .stats-container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+    margin-top: 1.2rem;
+    width: 100%;
+  }
+
+  .continue-trip-button {
+    margin-top: 1rem;
+  }
+}

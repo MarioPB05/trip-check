@@ -14,3 +14,8 @@ export interface Trip {
   startDate: string;
   endDate: string;
 }
+
+export interface CurrentTripDetails extends Trip {
+  numberOfLocations: number;
+  numberOfItems: number;
+}

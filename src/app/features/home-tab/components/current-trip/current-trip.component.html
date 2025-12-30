@@ -1,0 +1,20 @@
+<div class="current-trip-card">
+  <h4 class="title">{{ trip.name }}</h4>
+  <p class="details">{{ trip.destination }} - {{ duration }}</p>
+
+  <div class="stats-container">
+    <app-stat-card [data]="{ title: 'Equipajes', value: trip.numberOfLocations.toString() }" />
+    <app-stat-card [data]="{ title: 'Objetos', value: trip.numberOfItems.toString() }" />
+  </div>
+
+  <app-trip-button
+    type="secondary"
+    [fill]="false"
+    btnClass="flex center"
+    class="continue-trip-button"
+    (handleClick)="onContinueClick()"
+  >
+    Continuar
+    <lucide-icon [img]="ChevronRight" style="height: 24px" />
+  </app-trip-button>
+</div>
