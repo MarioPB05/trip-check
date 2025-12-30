@@ -1,5 +1,4 @@
 import { Component, Input } from '@angular/core';
-import { StatCard } from '@core/interfaces/stats.interface';
 import { NgClass } from '@angular/common';
 
 @Component({
