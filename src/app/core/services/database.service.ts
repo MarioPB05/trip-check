@@ -175,8 +175,6 @@ export class DatabaseService {
       for (const m of sorted) {
         if (applied.has(m.version)) continue;
 
-        console.info(`[DB] Applying migration ${m.version} (${m.description ?? 'no description'})`);
-
         const sql = await this.loadMigrationSql(m);
 
         // Nota clave: NO hacemos BEGIN/COMMIT aquí para evitar nested transactions.
