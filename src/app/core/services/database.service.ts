@@ -15,6 +15,7 @@ export class DatabaseService {
   private readonly dbName = 'trip-check';
   private readonly dbVersion = 1;
   private readonly isWeb = Capacitor.getPlatform() === 'web';
+  private createdNew = false;
 
   private opening?: Promise<void>;
   private initPromise?: Promise<void>;
@@ -76,6 +77,7 @@ export class DatabaseService {
       await this.open();
       await this.ensureMeta();
       await this.applyMigrations();
+      if (this.createdNew) await this.seedDefaultItems();
       if (this.isWeb) this.wrapForAutoPersist();
     })();
 
@@ -112,8 +114,10 @@ export class DatabaseService {
 
     const { result } = await this.sqlite.isConnection(this.dbName, false);
     if (result) {
+      this.createdNew = false;
       this.conn = await this.sqlite.retrieveConnection(this.dbName, false);
     } else {
+      this.createdNew = true;
       this.conn = await this.sqlite.createConnection(
         this.dbName,
         false,
@@ -276,4 +280,52 @@ export class DatabaseService {
     }
   }
   //endregion
+
+  async seedDefaultItems(): Promise<void> {
+    console.log('Seeding default items...');
+    const defaultItems = [
+      { name: 'Calzoncillo', emoji: '1fa72' },
+      { name: 'Calcetín', emoji: '1f9e6' },
+      { name: 'Camiseta', emoji: '1f455' },
+      { name: 'Camisa', emoji: '1f454' },
+      { name: 'Pantalón', emoji: '1f456' },
+      { name: 'Sudadera', emoji: '1f9e5' },
+      { name: 'Chaquetón', emoji: '1f9e5' },
+      { name: 'Zapato', emoji: '1f45e' },
+      { name: 'Chanclas', emoji: '1fa74' },
+      { name: 'Cepillo de dientes', emoji: '1faa5' },
+      { name: 'Pasta de dientes', emoji: '1f9f4' },
+      { name: 'Pijama', emoji: '1f97c' },
+      { name: 'Colonia', emoji: '1f9f4' },
+      { name: 'Toalla de ducha', emoji: '1f9fc' },
+      { name: 'Toalla de Playa', emoji: '1f3d6-fe0f' },
+      { name: 'Guantes', emoji: '1f9e4' },
+      { name: 'Camiseta interior', emoji: '1f455' },
+
+      { name: 'Pasaporte', emoji: '1f6c2' },
+      { name: 'Documentos', emoji: '1f4c4' },
+      { name: 'Cartera', emoji: '1f45b' },
+      { name: 'Llaves', emoji: '1f511' },
+      { name: 'Teléfono móvil', emoji: '1f4f1' },
+      { name: 'Portátil', emoji: '1f4bb' },
+      { name: 'Cargador', emoji: '1f50c' },
+      { name: 'Batería externa', emoji: '1f50b' },
+      { name: 'Auriculares', emoji: '1f3a7' },
+      { name: 'Gafas de sol', emoji: '1f576-fe0f' },
+      { name: 'Gorra', emoji: '1f9e2' },
+      { name: 'Paraguas', emoji: '2602-fe0f' },
+      { name: 'Protector solar', emoji: '1f9f4' },
+      { name: 'Medicamentos', emoji: '1f48a' },
+      { name: 'Botella de agua', emoji: '1f964' },
+      { name: 'Libro', emoji: '1f4d6' },
+      { name: 'Bañador', emoji: '1f459' },
+      { name: 'Botiquín básico', emoji: '26d1-fe0f' },
+    ];
+
+    await this.withConn(async (conn) => {
+      for (const item of defaultItems) {
+        await conn.run('INSERT INTO item (name, emoji) VALUES (?, ?)', [item.name, item.emoji]);
+      }
+    });
+  }
 }
