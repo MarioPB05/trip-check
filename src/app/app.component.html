@@ -2,7 +2,5 @@
   <app-loading-spinner [visible]="loading$ | async" [message]="message$ | async">
   </app-loading-spinner>
 
-  @if ((loading$ | async) === false) {
-    <ion-router-outlet></ion-router-outlet>
-  }
+  <ion-router-outlet></ion-router-outlet>
 </ion-app>
