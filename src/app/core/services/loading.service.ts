@@ -16,8 +16,6 @@ export class LoadingService {
   show(message: string = 'Cargando...'): void {
     this.loadingCounter++;
 
-    console.log('LoadingService: show called. Counter:', this.loadingCounter);
-
     this.messageSubject.next(message);
     this.loadingSubject.next(true);
   }
