@@ -1,0 +1,25 @@
+
+.spinner-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: 1rem;
+  height: 100dvb;
+  width: 100%;
+  position: fixed;
+  z-index: 1000;
+  top: 0;
+  background: var(--ion-color-dark);
+}
+
+.spinner {
+  width: 120px;
+  height: 120px;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}

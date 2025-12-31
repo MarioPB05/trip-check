@@ -1,3 +1,6 @@
 <ion-app>
+  <app-loading-spinner [visible]="loading$ | async" [message]="message$ | async">
+  </app-loading-spinner>
+
   <ion-router-outlet></ion-router-outlet>
 </ion-app>
