@@ -1,5 +1,6 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { DatabaseService } from '@core/services/database.service';
+import { LoadingService } from '@core/services/loading.service';
 
 @Component({
   selector: 'app-root',
@@ -17,6 +18,8 @@ export class AppComponent implements OnInit {
   constructor() {}
 
   async ngOnInit() {
+    this.loadingService.show('Iniciando base de datos...');
     await this.databaseService.init();
+    this.loadingService.hide();
   }
 }

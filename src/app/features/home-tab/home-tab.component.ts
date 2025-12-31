@@ -8,6 +8,7 @@ import { NoTripsAlertComponent } from '@features/home-tab/components/no-trips-al
 import { TripButtonComponent } from '@shared/components/trip-button/trip-button.component';
 import { LucideAngularModule, Plus } from 'lucide-angular';
 import { TripService } from '@features/home-tab/services/trip.service';
+import { LoadingService } from '@core/services/loading.service';
 
 @Component({
   selector: 'app-home-tab',
@@ -26,6 +27,7 @@ import { TripService } from '@features/home-tab/services/trip.service';
 export class HomeTabComponent implements OnInit {
   protected readonly Plus = Plus;
   private readonly tripService = inject(TripService);
+  private readonly loadingService = inject(LoadingService);
 
   currentTrips: CurrentTripDetails[] = [];
   futureTrips: Trip[] = [];
@@ -33,12 +35,15 @@ export class HomeTabComponent implements OnInit {
 
   async ngOnInit() {
     try {
+      this.loadingService.show('Cargando viajes...');
       this.currentTrips = await this.tripService.getAllCurrentTrips();
       this.pastTrips = await this.tripService.getAllPastTrips();
       this.futureTrips = await this.tripService.getAllFutureTrips();
     } catch (error) {
       console.error('Error loading trips in HomeTabComponent:', error);
       // TODO: Implement user-friendly error handling (e.g., show a toast notification)
+    } finally {
+      this.loadingService.hide();
     }
   }
 }
