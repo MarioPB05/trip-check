@@ -1,6 +1,6 @@
 <ion-content [fullscreen]="true" class="ion-padding">
   <div class="home-tab-container">
-    @if (currentTrips.length !== 0) {
+    @if (currentTrips.length > 0) {
       <div class="current-trips-section">
         <h4 class="current-trips-title">
           {{ currentTrips.length > 1 ? 'Viajes en curso' : 'Viaje en curso' }}
@@ -16,7 +16,7 @@
     <div class="trips-header">
       <h1 class="main-title">Tus viajes</h1>
 
-      @if (futureTrips.length !== 0 || pastTrips.length !== 0) {
+      @if (futureTrips.length > 0 || pastTrips.length > 0) {
         <app-trip-button
           type="primary"
           [fill]="true"
@@ -31,21 +31,41 @@
       }
     </div>
 
-    <div class="trips-container">
-      @if (futureTrips.length !== 0) {
-        <div class="future-trips">
-          @for (trip of futureTrips; track trip.id) {
-            <app-future-trip [trip]="trip" />
-          }
-        </div>
+    <div class="trips-sections">
+      @if (futureTrips.length > 0) {
+        <section class="future-trip-section">
+          <h3 class="section-title">Próximos viajes</h3>
+          <div class="future-trips">
+            <!-- Itera sobre los grupos de viajes futuros, que estan organizados por que tanto falta para el viaje -->
+            @for (organizedTrip of organizedFutureTrips; track organizedTrip.key) {
+              <h4 class="trips-organization">{{ organizedTrip.key }}</h4>
+              <div class="trips-container">
+                <!-- Itera sobre los viajes dentro del grupo y renderiza el componente para cada viaje -->
+                @for (trip of organizedTrip.trips; track trip.id) {
+                  <app-future-trip [trip]="trip" />
+                }
+              </div>
+            }
+          </div>
+        </section>
       }
 
-      @if (pastTrips.length !== 0) {
-        <div class="past-trips">
-          @for (trip of pastTrips; track trip.id) {
-            <app-past-trip [trip]="trip" />
-          }
-        </div>
+      @if (pastTrips.length > 0) {
+        <section class="past-trip-section">
+          <h3 class="section-title">Viajes pasados</h3>
+          <div class="past-trips">
+            <!-- Itera sobre los grupos de viajes pasados, organizados por cuanto tiempo ha pasado desde el viaje -->
+            @for (organizedTrip of organizedPastTrips; track organizedTrip.key) {
+              <h4 class="trips-organization">{{ organizedTrip.key }}</h4>
+              <div class="trips-container">
+                <!-- Itera sobre los viajes dentro del grupo y renderiza el componente para cada viaje -->
+                @for (trip of organizedTrip.trips; track trip.id) {
+                  <app-past-trip [trip]="trip" />
+                }
+              </div>
+            }
+          </div>
+        </section>
       }
     </div>
   </div>
