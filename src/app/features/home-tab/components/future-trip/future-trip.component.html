@@ -4,5 +4,12 @@
     <p class="details">{{ trip.destination }} - {{ duration }}</p>
   </div>
 
-  <p class="relative-start-date">{{ relativeStartDate }}</p>
+  <app-trip-button
+    type="secondary"
+    class="plan-trip-button"
+    btnClass="flex center small gap-2"
+    (handleClick)="onPlanTripClick()"
+  >
+    Planear <lucide-icon [img]="Briefcase" [size]="20" />
+  </app-trip-button>
 </div>
