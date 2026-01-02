@@ -32,6 +32,12 @@ export class TripRepository {
     };
   }
 
+  async deleteAllTrips(): Promise<void> {
+    await this.db.withConn(async (conn) => {
+      await conn.run('DELETE FROM trip');
+    });
+  }
+
   async addTrip(trip: Trip): Promise<void> {
     await this.db.withConn(async (conn) => {
       await conn.run(

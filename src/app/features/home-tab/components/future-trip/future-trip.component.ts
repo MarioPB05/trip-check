@@ -1,34 +1,32 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Trip } from '@core/models/trip.model';
-import { LucideAngularModule } from 'lucide-angular';
+import { Briefcase, LucideAngularModule } from 'lucide-angular';
 import { DateUtility } from '@core/utilities/date.utility';
+import { TripButtonComponent } from '@shared/components/trip-button/trip-button.component';
 
 @Component({
   selector: 'app-future-trip',
   standalone: true,
   templateUrl: './future-trip.component.html',
   styleUrls: ['./future-trip.component.scss'],
-  imports: [LucideAngularModule],
+  imports: [LucideAngularModule, TripButtonComponent],
 })
 export class FutureTripComponent implements OnInit {
+  protected readonly Briefcase = Briefcase;
+
   @Input() trip!: Trip;
 
-  relativeStartDate: string = 'En ';
   duration: string = '';
 
   ngOnInit() {
-    const today = new Date();
     const startDate = DateUtility.stringToDate(this.trip.startDate);
     const endDate = DateUtility.stringToDate(this.trip.endDate);
 
-    const daysUntilStart = DateUtility.dateDifferenceInDays(today, startDate);
-    this.relativeStartDate += DateUtility.daysToBestFormattedString(daysUntilStart);
-
-    if (daysUntilStart < 1) {
-      this.relativeStartDate = 'En curso';
-    }
-
     const tripDurationInDays = DateUtility.dateDifferenceInDays(startDate, endDate);
     this.duration = DateUtility.daysToBestFormattedString(tripDurationInDays);
+  }
+
+  onPlanTripClick() {
+    // TODO: Redirect to trip planning page
   }
 }
