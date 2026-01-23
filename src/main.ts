@@ -1,4 +1,4 @@
-import { AppModule } from './app/app.module';
+import { AppModule } from '@app/app.module';
 import { defineCustomElements as jeepSqliteDefineCustomElements } from 'jeep-sqlite/loader';
 import { platformBrowser } from '@angular/platform-browser';
 
