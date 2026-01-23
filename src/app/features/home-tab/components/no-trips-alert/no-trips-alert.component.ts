@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { LucideAngularModule, PlaneTakeoff, Plus } from 'lucide-angular';
 import { TripButtonComponent } from '@shared/components/trip-button/trip-button.component';
 
