@@ -8,8 +8,6 @@ import { Briefcase, Info, LucideAngularModule } from 'lucide-angular';
   imports: [LucideAngularModule],
 })
 export class NoTemplatesAlertComponent {
-  constructor() {}
-
   protected readonly Briefcase = Briefcase;
   protected readonly Info = Info;
 }
