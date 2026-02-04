@@ -1,0 +1,61 @@
+
+.main {
+  padding: 1rem;
+  border: 1px solid var(--ion-color-dark-gray);
+
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  gap: 2rem 1rem;
+
+  h4, p {
+    margin: 0;
+  }
+
+  .texts {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .title {
+    font-size: 1.3rem;
+  }
+
+  .subtitle {
+    color: var(--ion-color-medium);
+    font-size: 0.9rem;
+  }
+
+  .icon {
+    padding: 0.5rem;
+  }
+
+  .explanation-alert {
+    display:  flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    grid-column: span 2;
+
+    color: var(--ion-color-secondary);
+    border: 1px solid var(--ion-color-secondary-shade);
+    padding: 1rem;
+    border-radius: 0.5rem;
+    width: 100%;
+
+    .explanation-header {
+      font-weight: bold;
+      height: fit-content;
+      display: flex;
+      gap: 0.5rem;
+      align-items: center;
+    }
+
+    .explanation-text {
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+      flex-direction: column;
+    }
+  }
+}

@@ -1,5 +1,5 @@
 button {
-  padding: 10px;
+  padding: 0.6rem;
   border-radius: 0.3rem;
   width: 100%;
   font-size: 1rem;
@@ -32,4 +32,16 @@ button:enabled:active {
 
 .gap-2 {
   gap: 0.5rem;
+}
+
+.padding-m {
+  padding: 0.5rem;
+}
+
+.padding-s {
+  padding: 0.4rem;
+}
+
+.padding-xs {
+  padding: 0.25rem;
 }

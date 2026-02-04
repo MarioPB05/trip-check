@@ -2,7 +2,15 @@
   <h1 class="main-title">Tus objetos</h1>
 
   <div class="toolbar">
-    <app-trip-button [fill]="true">Crear nuevo</app-trip-button>
+    <app-trip-button
+      type="primary"
+      [fill]="true"
+      class="create-trip-button"
+      btnClass="flex center gap-2 padding-s"
+    >
+      <lucide-icon [img]="Plus" />
+      Crear nuevo
+    </app-trip-button>
   </div>
 
   @if (usedItems.length > 0) {

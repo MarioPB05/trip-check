@@ -4,3 +4,8 @@ export interface Item {
   name: string;
   deleted: boolean;
 }
+
+export interface ItemWithQuantity {
+  item: Item;
+  quantity: number;
+}
