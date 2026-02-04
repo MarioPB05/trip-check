@@ -5,12 +5,13 @@ import { Item } from '@core/models/item.model';
 import { ItemCardComponent } from '@shared/components/item-card/item-card.component';
 import { TripButtonComponent } from '@shared/components/trip-button/trip-button.component';
 import { LoadingService } from '@core/services/loading.service';
+import { LucideAngularModule, Plus } from 'lucide-angular';
 
 @Component({
   selector: 'app-item-tab',
   templateUrl: './item-tab.component.html',
   styleUrls: ['./item-tab.component.scss'],
-  imports: [IonContent, ItemCardComponent, TripButtonComponent],
+  imports: [IonContent, ItemCardComponent, TripButtonComponent, LucideAngularModule],
 })
 export class ItemTabComponent implements OnInit {
   private readonly itemService = inject(ItemService);
@@ -34,4 +35,6 @@ export class ItemTabComponent implements OnInit {
   openItemDetails(item: Item) {
     // TODO: Implement item details opening logic
   }
+
+  protected readonly Plus = Plus;
 }
