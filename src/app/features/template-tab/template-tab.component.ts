@@ -30,8 +30,6 @@ export class TemplateTabComponent implements AfterViewInit, OnInit {
   filtratedTemplates: Template[] = [];
   searchTerm: string = '';
 
-  constructor() {}
-
   @ViewChild('searchIcon', { read: ElementRef })
   searchIconRef!: ElementRef<HTMLElement>;
 
