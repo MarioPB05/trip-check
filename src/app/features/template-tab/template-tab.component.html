@@ -1,13 +1,52 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title> Tab 1 </ion-title>
-  </ion-toolbar>
-</ion-header>
+<ion-content [fullscreen]="true" class="ion-padding">
+  <div class="templates-header">
+    <h1 class="main-title">Tus plantillas</h1>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Tab 1</ion-title>
-    </ion-toolbar>
-  </ion-header>
+    <app-trip-button
+      type="primary"
+      [fill]="true"
+      class="create-trip-button"
+      btnClass="flex center gap-2 padding-s"
+    >
+      <lucide-icon [img]="Plus" />
+      Crear nueva
+    </app-trip-button>
+  </div>
+
+  <div class="templates-section">
+    <div class="search-bar-container">
+      <lucide-icon [img]="Search" class="search-icon" #searchIcon />
+      <input
+        type="text"
+        placeholder="Buscar plantillas..."
+        class="search-bar"
+        [value]="searchTerm"
+        (input)="onSearchChange($event)"
+      />
+    </div>
+
+    <div class="templates-container">
+      @for (template of filtratedTemplates; track template.id) {
+        <app-location-items [location]="template" [items]="template.items">
+          <app-trip-button type="tertiary" class="see-all-button" btnClass="padding-s">
+            Ver
+          </app-trip-button>
+          <app-trip-button type="tertiary" class="see-all-button" btnClass="padding-s">
+            Editar
+          </app-trip-button>
+        </app-location-items>
+      }
+
+      @if (templates.length === 0) {
+        <app-no-templates-alert></app-no-templates-alert>
+      }
+
+      @if (templates.length > 0 && filtratedTemplates.length === 0) {
+        <div class="no-results-container">
+          <lucide-icon [img]="Search" size="70" class="no-results-icon" />
+          <p class="no-results-text">No se encontraron plantillas que coincidan con tu búsqueda.</p>
+        </div>
+      }
+    </div>
+  </div>
 </ion-content>
