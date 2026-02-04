@@ -1,12 +1,11 @@
-import { Component, OnInit } from '@angular/core';
-import { Briefcase, Info, LucideAngularModule, PlaneTakeoff, Plus } from 'lucide-angular';
-import { TripButtonComponent } from '@shared/components/trip-button/trip-button.component';
+import { Component } from '@angular/core';
+import { Briefcase, Info, LucideAngularModule } from 'lucide-angular';
 
 @Component({
   selector: 'app-no-templates-alert',
   templateUrl: './no-templates-alert.component.html',
   styleUrls: ['./no-templates-alert.component.scss'],
-  imports: [LucideAngularModule, TripButtonComponent],
+  imports: [LucideAngularModule],
 })
 export class NoTemplatesAlertComponent {
   constructor() {}
