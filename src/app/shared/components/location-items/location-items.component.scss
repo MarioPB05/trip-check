@@ -1,7 +1,6 @@
 .location-container {
   width: 100%;
-  margin: 1rem 0;
-  padding: 1rem;
+  margin-top: 0.5rem;
 
   .location-header {
     width: 100%;
@@ -10,10 +9,10 @@
     justify-content: space-between;
     align-items: center;
 
-    h3 {
+    p {
       margin: 0;
       padding-left: 0.8rem;
-      font-weight: 500 !important;
+      font-size: 1.2rem;
     }
 
     .location-toolbar {
@@ -29,7 +28,7 @@
     height: 2px;
     background-color: var(--ion-color-light-blue);
     margin-top: 0.5rem;
-    margin-bottom: 1rem;
+    margin-bottom: 0.5rem;
   }
 
   .location-items-carrousel {
