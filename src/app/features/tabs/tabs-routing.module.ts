@@ -19,10 +19,23 @@ const routes: Routes = [
       },
       {
         path: 'templates',
-        loadComponent: () =>
-          import('@features/template-tab/template-tab.component').then(
-            (m) => m.TemplateTabComponent,
-          ),
+
+        children: [
+          {
+            path: 'create',
+            loadComponent: () =>
+              import('@features/manage-template/manage-template.component').then(
+                (m) => m.ManageTemplateComponent,
+              ),
+          },
+          {
+            path: '',
+            loadComponent: () =>
+              import('@features/template-tab/template-tab.component').then(
+                (m) => m.TemplateTabComponent,
+              ),
+          },
+        ],
       },
       {
         path: '',
