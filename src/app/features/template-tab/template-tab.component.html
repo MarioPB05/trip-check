@@ -7,6 +7,7 @@
       [fill]="true"
       class="create-trip-button"
       btnClass="flex center gap-2 padding-s"
+      [routerLink]="['create']"
     >
       <lucide-icon [img]="Plus" />
       Crear nueva
@@ -14,16 +15,7 @@
   </div>
 
   <div class="templates-section">
-    <div class="search-bar-container">
-      <lucide-icon [img]="Search" class="search-icon" #searchIcon />
-      <input
-        type="text"
-        placeholder="Buscar plantillas..."
-        class="search-bar"
-        [value]="searchTerm"
-        (input)="onSearchChange($event)"
-      />
-    </div>
+    <ion-searchbar placeholder="Buscar plantillas..." (ionChange)="onSearchChange($event)" />
 
     <div class="templates-container">
       @for (template of filtratedTemplates; track template.id) {
