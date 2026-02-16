@@ -1,0 +1,45 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button color="primary" defaultHref="/manage-templates"></ion-back-button>
+    </ion-buttons>
+
+    <ion-title class="header-title">Crear plantilla</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding" [fullscreen]="true">
+  <main>
+    <input placeholder="Nombre de la plantilla..." class="name-input" />
+    <div class="item-section">
+      <h4 class="section-title">Agregar objetos</h4>
+      <app-trip-button id="open-modal" btnClass="flex center gap-2">
+        <lucide-icon [img]="Search" />
+        Buscar objetos
+      </app-trip-button>
+      <div class="items-container">
+        <!--<app-item-card-editable
+          [item]="item.item"
+          [quantity]="item.quantity"
+          (quantityChange)="onItemChangeQuantity(item, $event)"
+        />-->
+
+        @for (itemQuantity of items; track itemQuantity.item.id) {
+          <app-item-card-editable
+            [item]="itemQuantity.item"
+            [(quantity)]="itemQuantity.quantity"
+            (quantityChange)="handleQuantityChange(itemQuantity, $event)"
+          />
+        }
+      </div>
+    </div>
+  </main>
+
+  <app-search-items-modal />
+</ion-content>
+
+<app-remove-item-alert
+  [isAlertOpen]="isRemoveItemAlertOpen"
+  (confirmed)="onConfirmRemoveItem()"
+  (cancelled)="onCancelRemoveItem()"
+/>

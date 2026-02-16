@@ -1,0 +1,21 @@
+main {
+  display: flex;
+  flex-flow: column;
+  padding-top: 10px;
+  gap: 20px;
+}
+
+main > h2 {
+  text-align: center;
+}
+
+.name-input {
+  width: 100%;
+}
+
+.item-section {
+  padding-top: 20px;
+  display: flex;
+  flex-flow: column;
+  gap: 15px;
+}
