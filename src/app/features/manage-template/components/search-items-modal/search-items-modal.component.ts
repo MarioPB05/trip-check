@@ -11,6 +11,7 @@ import { Item } from '@core/models/item.model';
 import { ItemService } from '@features/manage-template/services/item.service';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { debounceTime, distinctUntilChanged } from 'rxjs';
+import { LucideAngularModule, Search } from 'lucide-angular';
 
 @Component({
   selector: 'app-search-items-modal',
@@ -24,9 +25,12 @@ import { debounceTime, distinctUntilChanged } from 'rxjs';
     IonInfiniteScrollContent,
     ItemCardComponent,
     ReactiveFormsModule,
+    LucideAngularModule,
   ],
 })
 export class SearchItemsModalComponent implements OnInit {
+  protected readonly searchIcon = Search;
+
   private readonly itemsService: ItemService = inject(ItemService);
 
   PAGE_SIZE = 20;
@@ -82,7 +86,7 @@ export class SearchItemsModalComponent implements OnInit {
 
     try {
       await this.loadItems(
-        this.searchControl.getRawValue() ?? '',
+        this.searchControl.value ?? '',
         this.PAGE_SIZE,
         this.items.length,
         true,

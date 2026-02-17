@@ -11,6 +11,16 @@
         @for (item of items; track item.id) {
           <app-item-card [item]="item" class="selectable-item" />
         }
+
+        @if (items.length === 0 && searchControl.value) {
+          <div class="no-results-container">
+            <lucide-icon [img]="searchIcon" size="70" class="no-results-icon" />
+            <p class="no-results-text">
+              No se encontraron resultados para "<strong>{{ searchControl.value }}</strong
+              >"
+            </p>
+          </div>
+        }
       </div>
       <ion-infinite-scroll (ionInfinite)="onIonInfinite($event)">
         <ion-infinite-scroll-content></ion-infinite-scroll-content>
