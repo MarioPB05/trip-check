@@ -57,4 +57,21 @@ export class ItemRepository {
       return res.values?.map((row) => this.formatDBRowToItem(row)) || [];
     });
   }
+
+  getItemsFilteredAndPaginated(searchTerm: string, limit: number, offset: number): Promise<Item[]> {
+    return this.db.withConn(async (conn) => {
+      const res = await conn.query(
+        `
+        SELECT i.id, i.name, i.emoji, i.deleted
+        FROM item AS i
+        WHERE i.deleted = 0 AND i.name LIKE ?
+        ORDER BY i.name
+        LIMIT ? OFFSET ?
+      `,
+        [`%${searchTerm}%`, limit, offset],
+      );
+
+      return res.values?.map((row) => this.formatDBRowToItem(row)) || [];
+    });
+  }
 }
