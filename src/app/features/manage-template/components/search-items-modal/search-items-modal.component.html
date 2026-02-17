@@ -10,6 +10,11 @@
         placeholder="Buscar objetos..."
         (click)="modal.setCurrentBreakpoint(0.75)"
       ></ion-searchbar>
+      <div class="items-container">
+        @for (item of items; track item.id) {
+          <app-item-card [item]="item" class="selectable-item" />
+        }
+      </div>
     </ion-content>
   </ng-template>
 </ion-modal>

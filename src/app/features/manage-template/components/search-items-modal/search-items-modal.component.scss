@@ -1,0 +1,13 @@
+
+.items-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+  justify-items: center;
+  gap: 1rem;
+  padding: 1rem;
+
+  app-item-card:active {
+    transform: scale(0.95);
+    transition: transform 0.1s;
+  }
+}
