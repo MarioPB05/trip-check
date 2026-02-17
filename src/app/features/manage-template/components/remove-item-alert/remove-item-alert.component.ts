@@ -12,8 +12,10 @@ export class RemoveItemAlertComponent {
   @Input() isAlertOpen = false;
   @Input() itemId!: number;
 
-  @Output() confirmed: EventEmitter<void> = new EventEmitter<void>();
+  @Output() confirmed: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output() cancelled: EventEmitter<void> = new EventEmitter<void>();
+
+  isNoAskAgainChecked = false;
 
   alertButtons: AlertButton[] = [
     {
@@ -28,16 +30,19 @@ export class RemoveItemAlertComponent {
       text: 'Quitar',
       role: 'confirm',
       handler: () => {
-        this.confirmed.emit();
+        this.confirmed.emit(this.isNoAskAgainChecked);
       },
     },
   ];
   alertInputs: AlertInput[] = [
     {
-      label: 'No preguntarme de nuevo',
+      label: 'Quitar siempre que llegue a 0',
       type: 'checkbox',
       value: 'noAskAgain',
       cssClass: 'color-medium-to-children',
+      handler: (event: any) => {
+        this.isNoAskAgainChecked = event.checked;
+      },
     },
   ];
 }

@@ -40,6 +40,6 @@
 
 <app-remove-item-alert
   [isAlertOpen]="isRemoveItemAlertOpen"
-  (confirmed)="onConfirmRemoveItem()"
+  (confirmed)="onConfirmRemoveItem($event)"
   (cancelled)="onCancelRemoveItem()"
 />

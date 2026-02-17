@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import {
   IonBackButton,
   IonButtons,
@@ -8,11 +8,12 @@ import {
   IonToolbar,
 } from '@ionic/angular/standalone';
 import { ItemCardEditableComponent } from '@shared/components/item-card-editable/item-card-editable.component';
-import { Item, ItemWithQuantity } from '@core/models/item.model';
+import { ItemWithQuantity } from '@core/models/item.model';
 import { TripButtonComponent } from '@shared/components/trip-button/trip-button.component';
 import { LucideAngularModule, Search } from 'lucide-angular';
 import { RemoveItemAlertComponent } from '@features/manage-template/components/remove-item-alert/remove-item-alert.component';
 import { SearchItemsModalComponent } from '@features/manage-template/components/search-items-modal/search-items-modal.component';
+import { PreferencesService } from '@core/services/preferences.service';
 
 @Component({
   selector: 'app-create-template',
@@ -32,9 +33,11 @@ import { SearchItemsModalComponent } from '@features/manage-template/components/
     SearchItemsModalComponent,
   ],
 })
-export class ManageTemplateComponent {
+export class ManageTemplateComponent implements OnInit {
   protected readonly Search = Search;
+  private readonly preferencesService = inject(PreferencesService);
 
+  isRemoveItemAlertSuppressed = false;
   isRemoveItemAlertOpen = false;
   selectedItemToRemove: ItemWithQuantity | null = null;
 
@@ -50,29 +53,46 @@ export class ManageTemplateComponent {
     },
   ];
 
+  ngOnInit() {
+    this.preferencesService.get<boolean>('suppressRemoveItemAlert').then((value) => {
+      this.isRemoveItemAlertSuppressed = value ?? false;
+    });
+  }
+
+  removeItem(itemId: number): void {
+    this.items = this.items.filter((iq) => iq.item.id !== itemId);
+  }
+
   handleQuantityChange(itemQuantity: ItemWithQuantity, newQuantity: number): void {
     if (newQuantity > 0) {
       itemQuantity.quantity = newQuantity;
       return;
     }
 
-    // Si llega a 0, no lo dejamos en 0 todavía
+    if (this.isRemoveItemAlertSuppressed) {
+      this.removeItem(itemQuantity.item.id);
+      return;
+    }
+
     this.selectedItemToRemove = itemQuantity;
     this.isRemoveItemAlertOpen = true;
   }
 
-  onConfirmRemoveItem(): void {
-    console.log('Item removed');
+  onConfirmRemoveItem(isNoAskAgainChecked: boolean): void {
     this.isRemoveItemAlertOpen = false;
+    this.isRemoveItemAlertSuppressed = isNoAskAgainChecked;
+
+    if (this.isRemoveItemAlertSuppressed) {
+      this.preferencesService.set('suppressRemoveItemAlert', true);
+    }
 
     if (this.selectedItemToRemove != null) {
-      this.items = this.items.filter((iq) => iq.item.id !== this.selectedItemToRemove?.item.id);
+      this.removeItem(this.selectedItemToRemove.item.id);
       this.selectedItemToRemove = null;
     }
   }
 
   onCancelRemoveItem(): void {
-    console.log('Item removal cancelled');
     this.isRemoveItemAlertOpen = false;
 
     if (this.selectedItemToRemove) {
