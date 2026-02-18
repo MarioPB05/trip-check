@@ -8,7 +8,7 @@ import {
   IonToolbar,
 } from '@ionic/angular/standalone';
 import { ItemCardEditableComponent } from '@shared/components/item-card-editable/item-card-editable.component';
-import { ItemWithQuantity } from '@core/models/item.model';
+import { Item } from '@core/models/item.model';
 import { TripButtonComponent } from '@shared/components/trip-button/trip-button.component';
 import { LucideAngularModule, Search } from 'lucide-angular';
 import { RemoveItemAlertComponent } from '@features/manage-template/components/remove-item-alert/remove-item-alert.component';
@@ -39,19 +39,10 @@ export class ManageTemplateComponent implements OnInit {
 
   isRemoveItemAlertSuppressed = false;
   isRemoveItemAlertOpen = false;
-  selectedItemToRemove: ItemWithQuantity | null = null;
+  selectedItemToRemove: Item | null = null;
 
-  items: ItemWithQuantity[] = [
-    {
-      item: {
-        id: 2,
-        name: 'Item 1',
-        emojiUrl: 'https://cdn.jsdelivr.net/gh/jdecked/twemoji@latest/assets/svg/1fa72.svg',
-        deleted: false,
-      },
-      quantity: 2,
-    },
-  ];
+  protected selectedItems: Map<number, Item> = new Map<number, Item>();
+  protected quantityByItemId: Map<number, number> = new Map<number, number>();
 
   ngOnInit() {
     this.preferencesService.get<boolean>('suppressRemoveItemAlert').then((value) => {
@@ -60,21 +51,27 @@ export class ManageTemplateComponent implements OnInit {
   }
 
   removeItem(itemId: number): void {
-    this.items = this.items.filter((iq) => iq.item.id !== itemId);
+    this.quantityByItemId.delete(itemId);
+    this.selectedItems.delete(itemId);
   }
 
-  handleQuantityChange(itemQuantity: ItemWithQuantity, newQuantity: number): void {
+  addItem(item: Item): void {
+    this.selectedItems.set(item.id, item);
+    this.quantityByItemId.set(item.id, 1);
+  }
+
+  handleQuantityChange(item: Item, newQuantity: number): void {
     if (newQuantity > 0) {
-      itemQuantity.quantity = newQuantity;
+      this.quantityByItemId.set(item.id, newQuantity);
       return;
     }
 
     if (this.isRemoveItemAlertSuppressed) {
-      this.removeItem(itemQuantity.item.id);
+      this.removeItem(item.id);
       return;
     }
 
-    this.selectedItemToRemove = itemQuantity;
+    this.selectedItemToRemove = item;
     this.isRemoveItemAlertOpen = true;
   }
 
@@ -83,11 +80,14 @@ export class ManageTemplateComponent implements OnInit {
     this.isRemoveItemAlertSuppressed = isNoAskAgainChecked;
 
     if (this.isRemoveItemAlertSuppressed) {
-      this.preferencesService.set('suppressRemoveItemAlert', true);
+      this.preferencesService.set('suppressRemoveItemAlert', true).catch((error) => {
+        console.error('Error saving preference:', error);
+        // TODO: Handle error, show toast, etc.
+      });
     }
 
     if (this.selectedItemToRemove != null) {
-      this.removeItem(this.selectedItemToRemove.item.id);
+      this.removeItem(this.selectedItemToRemove.id);
       this.selectedItemToRemove = null;
     }
   }
@@ -96,7 +96,8 @@ export class ManageTemplateComponent implements OnInit {
     this.isRemoveItemAlertOpen = false;
 
     if (this.selectedItemToRemove) {
-      this.selectedItemToRemove.quantity = 1;
+      this.quantityByItemId.set(this.selectedItemToRemove.id, 1);
+      this.selectedItemToRemove = null;
     }
   }
 }

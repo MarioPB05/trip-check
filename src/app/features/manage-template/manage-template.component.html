@@ -18,17 +18,11 @@
         Buscar objetos
       </app-trip-button>
       <div class="items-container">
-        <!--<app-item-card-editable
-          [item]="item.item"
-          [quantity]="item.quantity"
-          (quantityChange)="onItemChangeQuantity(item, $event)"
-        />-->
-
-        @for (itemQuantity of items; track itemQuantity.item.id) {
+        @for (item of selectedItems.values(); track item.id) {
           <app-item-card-editable
-            [item]="itemQuantity.item"
-            [(quantity)]="itemQuantity.quantity"
-            (quantityChange)="handleQuantityChange(itemQuantity, $event)"
+            [item]="item"
+            [quantity]="quantityByItemId.get(item.id) || 0"
+            (quantityChange)="handleQuantityChange(item, $event)"
           />
         }
       </div>
