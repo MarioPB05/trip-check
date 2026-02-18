@@ -29,7 +29,11 @@
     </div>
   </main>
 
-  <app-search-items-modal />
+  <app-search-items-modal
+    [selectedItems]="selectedItems"
+    (itemSelected)="handleItemsSelected($event)"
+    (itemDeselected)="handleItemDeselected($event)"
+  />
 </ion-content>
 
 <app-remove-item-alert

@@ -100,4 +100,12 @@ export class ManageTemplateComponent implements OnInit {
       this.selectedItemToRemove = null;
     }
   }
+
+  protected handleItemsSelected(item: Item) {
+    this.addItem(item);
+  }
+
+  protected handleItemDeselected(item: Item) {
+    this.removeItem(item.id);
+  }
 }
