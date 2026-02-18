@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, EventEmitter, inject, Input, OnInit, Output } from '@angular/core';
 import {
   IonContent,
   IonInfiniteScroll,
@@ -30,14 +30,19 @@ import { LucideAngularModule, Search } from 'lucide-angular';
 })
 export class SearchItemsModalComponent implements OnInit {
   protected readonly searchIcon = Search;
-
   private readonly itemsService: ItemService = inject(ItemService);
+  private readonly PAGE_SIZE = 20;
 
-  PAGE_SIZE = 20;
+  @Input() selectedItems: Map<number, Item> = new Map<number, Item>();
+  @Output() itemSelected: EventEmitter<Item> = new EventEmitter<Item>();
+  @Output() itemDeselected: EventEmitter<Item> = new EventEmitter<Item>();
 
-  protected items: Item[] = [];
+  protected allItems: Item[] = [];
+
   protected searchControl = new FormControl('');
   protected allItemsLoaded = false;
+
+  constructor() {}
 
   private async loadItems(searchTerm: string, limit: number, offset: number, append = false) {
     try {
@@ -48,9 +53,9 @@ export class SearchItemsModalComponent implements OnInit {
       );
 
       if (append) {
-        this.items = this.items.concat(newItems);
+        this.allItems = this.allItems.concat(newItems);
       } else {
-        this.items = newItems;
+        this.allItems = newItems;
       }
 
       if (newItems.length < limit) {
@@ -58,7 +63,6 @@ export class SearchItemsModalComponent implements OnInit {
       }
     } catch (error) {
       // TODO: Handle error, show toast, etc.
-      throw error;
     }
   }
 
@@ -68,12 +72,17 @@ export class SearchItemsModalComponent implements OnInit {
     }
 
     this.allItemsLoaded = false;
-    this.items = [];
+    this.allItems = [];
 
-    this.loadItems(searchTerm, this.PAGE_SIZE, 0, false).catch((error) => {
-      console.error(error);
-      // TODO: Handle error, show toast, etc.
-    });
+    this.loadItems(searchTerm, this.PAGE_SIZE, 0, false);
+  }
+
+  onItemClick(item: Item) {
+    if (this.selectedItems.has(item.id)) {
+      this.itemDeselected.emit(item);
+    } else {
+      this.itemSelected.emit(item);
+    }
   }
 
   async onIonInfinite($event: any) {
@@ -84,35 +93,23 @@ export class SearchItemsModalComponent implements OnInit {
 
     console.log('Loading more items...');
 
-    try {
-      await this.loadItems(
-        this.searchControl.value ?? '',
-        this.PAGE_SIZE,
-        this.items.length,
-        true,
-      ).catch((error) => {
-        console.error(error);
-        // TODO: Handle error, show toast, etc.
-      });
+    await this.loadItems(
+      this.searchControl.value ?? '',
+      this.PAGE_SIZE,
+      this.allItems.length,
+      true,
+    );
 
-      $event.target.complete();
-    } catch (error) {
-      // TODO: Handle error, show toast, etc.
-    }
+    $event.target.complete();
   }
 
   async ngOnInit() {
-    try {
-      await this.loadItems('', this.PAGE_SIZE, 0, false);
-    } catch (error) {
-      // TODO: Handle error, show toast, etc.
-    }
+    await this.loadItems('', this.PAGE_SIZE, 0, false);
 
     // Listen to search input changes with debounce
     this.searchControl.valueChanges
       .pipe(debounceTime(300), distinctUntilChanged())
       .subscribe((searchTerm) => {
-        console.log('Search term changed:', searchTerm);
         this.onSearchItem(searchTerm);
       });
   }
