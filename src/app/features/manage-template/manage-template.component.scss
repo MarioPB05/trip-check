@@ -19,3 +19,9 @@ main > h2 {
   flex-flow: column;
   gap: 15px;
 }
+
+.items-container {
+  display: flex;
+  flex-flow: column;
+  gap: 1rem;
+}
