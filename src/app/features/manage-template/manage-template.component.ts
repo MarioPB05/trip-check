@@ -10,7 +10,7 @@ import {
 import { ItemCardEditableComponent } from '@shared/components/item-card-editable/item-card-editable.component';
 import { Item } from '@core/models/item.model';
 import { TripButtonComponent } from '@shared/components/trip-button/trip-button.component';
-import { LucideAngularModule, Search } from 'lucide-angular';
+import { LucideAngularModule, Plus, Save, Search, Shirt } from 'lucide-angular';
 import { RemoveItemAlertComponent } from '@features/manage-template/components/remove-item-alert/remove-item-alert.component';
 import { SearchItemsModalComponent } from '@features/manage-template/components/search-items-modal/search-items-modal.component';
 import { PreferencesService } from '@core/services/preferences.service';
@@ -34,13 +34,16 @@ import { PreferencesService } from '@core/services/preferences.service';
   ],
 })
 export class ManageTemplateComponent implements OnInit {
-  protected readonly Search = Search;
+  protected readonly searchIcon = Search;
   protected readonly saveIcon = Save;
+  protected readonly plusIcon = Plus;
+  protected readonly shirtIcon = Shirt;
   private readonly preferencesService = inject(PreferencesService);
 
   isRemoveItemAlertSuppressed = false;
   isRemoveItemAlertOpen = false;
   selectedItemToRemove: Item | null = null;
+  isEditMode = false;
 
   protected selectedItems: Map<number, Item> = new Map<number, Item>();
   protected quantityByItemId: Map<number, number> = new Map<number, number>();
@@ -108,5 +111,9 @@ export class ManageTemplateComponent implements OnInit {
 
   protected handleItemDeselected(item: Item) {
     this.removeItem(item.id);
+  }
+
+  protected handleSaveTemplate() {
+    console.log('Saving template with items');
   }
 }
