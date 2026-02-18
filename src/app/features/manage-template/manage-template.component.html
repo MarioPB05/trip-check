@@ -29,6 +29,21 @@
     </div>
   </main>
 
+  <app-trip-button
+    [fill]="true"
+    class="save-button"
+    btnClass="flex center gap-2"
+    (click)="handleSaveTemplate()"
+  >
+    @if (isEditMode) {
+      <lucide-icon [img]="saveIcon" />
+      Guardar cambios
+    } @else {
+      <lucide-icon [img]="plusIcon" />
+      Crear plantilla
+    }
+  </app-trip-button>
+
   <app-search-items-modal
     [selectedItems]="selectedItems"
     (itemSelected)="handleItemsSelected($event)"

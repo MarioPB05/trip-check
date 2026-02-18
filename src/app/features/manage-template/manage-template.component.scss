@@ -25,3 +25,11 @@ main > h2 {
   flex-flow: column;
   gap: 1rem;
 }
+
+.save-button {
+  position: fixed;
+  bottom: 1rem;
+  width: 90%;
+  left: 50%;
+  transform: translateX(-50%);
+}

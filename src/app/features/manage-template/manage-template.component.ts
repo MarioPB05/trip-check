@@ -35,6 +35,7 @@ import { PreferencesService } from '@core/services/preferences.service';
 })
 export class ManageTemplateComponent implements OnInit {
   protected readonly Search = Search;
+  protected readonly saveIcon = Save;
   private readonly preferencesService = inject(PreferencesService);
 
   isRemoveItemAlertSuppressed = false;
