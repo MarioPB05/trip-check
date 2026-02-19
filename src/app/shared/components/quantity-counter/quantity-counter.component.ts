@@ -13,9 +13,9 @@ export class QuantityCounterComponent {
   protected readonly MinusIcon = MinusIcon;
 
   @Input() min: number = 0;
+  @Input() quantity: number = 1;
   @Output() quantityChange = new EventEmitter<number>();
 
-  protected quantity: number = 1;
   protected isInvalid: boolean = false;
   protected max: number = 9999;
 

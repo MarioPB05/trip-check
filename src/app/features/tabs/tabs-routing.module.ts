@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { TabsPage } from './tabs.page';
+import { templateResolver } from '@features/manage-template/template.resolver';
 
 const routes: Routes = [
   {
@@ -19,10 +20,33 @@ const routes: Routes = [
       },
       {
         path: 'templates',
-        loadComponent: () =>
-          import('@features/template-tab/template-tab.component').then(
-            (m) => m.TemplateTabComponent,
-          ),
+
+        children: [
+          {
+            path: 'create',
+            loadComponent: () =>
+              import('@features/manage-template/manage-template.component').then(
+                (m) => m.ManageTemplateComponent,
+              ),
+          },
+          {
+            path: 'edit/:id',
+            loadComponent: () =>
+              import('@features/manage-template/manage-template.component').then(
+                (m) => m.ManageTemplateComponent,
+              ),
+            resolve: {
+              template: templateResolver,
+            },
+          },
+          {
+            path: '',
+            loadComponent: () =>
+              import('@features/template-tab/template-tab.component').then(
+                (m) => m.TemplateTabComponent,
+              ),
+          },
+        ],
       },
       {
         path: '',

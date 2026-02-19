@@ -30,19 +30,6 @@ export class TemplateService {
   }
 
   async getAllTemplates() {
-    let templates: Template[] = await this.templateRepo.getAllTemplates();
-
-    // Convert emojis to emoji URLs
-    templates = templates.map((template) => {
-      template.items = template.items.map((itemWithQuantity) => {
-        itemWithQuantity.item.emojiUrl = this.emojiService.getEmojiUrl(
-          itemWithQuantity.item.emojiUrl || '',
-        );
-        return itemWithQuantity;
-      });
-      return template;
-    });
-
-    return templates;
+    return await this.templateRepo.getAllTemplates();
   }
 }

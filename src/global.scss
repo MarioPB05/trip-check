@@ -31,15 +31,21 @@ html {
 }
 
 ion-content {
-  --padding-top: calc(var(--ion-safe-area-top) + 2rem)!important;
-  --padding-bottom: 5rem!important;
+  --padding-top: calc(var(--ion-safe-area-top) + 2rem) !important;
+  --padding-bottom: 5rem !important;
 }
 
 .text-base {
   font-size: 1rem !important;
 }
 
-h1, h2, h3, h4, h5, h6, p {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p {
   margin: 0;
 }
 
@@ -62,16 +68,17 @@ h3 {
 }
 
 input {
-  color: var(--ion-color-light);
-  border: 1px solid var(--ion-color-dark-gray);
-  background: transparent;
+  color: var(--ion-color-light) !important;
+  border: 1px solid var(--ion-color-dark-gray) !important;
+  background: transparent !important;
   padding: 0.5rem 0.5rem;
-  border-radius: 0.3rem;
+  border-radius: 0.3rem !important;
+  box-shadow: none !important;
 }
 
 input::placeholder {
-  color: var(--ion-color-light);
-  opacity: 0.5;
+  color: var(--ion-color-light) !important;
+  opacity: 0.5 !important;
 }
 
 input.error {
@@ -79,9 +86,9 @@ input.error {
 }
 
 input:focus {
-  border-color: var(--ion-color-primary);
-  outline: none;
-  box-shadow: 0 0 5px var(--ion-color-primary);
+  border-color: var(--ion-color-primary) !important;
+  outline: none !important;
+  box-shadow: 0 0 5px var(--ion-color-primary) !important;
 }
 
 .item-options-modal {
@@ -90,4 +97,44 @@ input:focus {
 
 lucide-icon {
   display: contents;
+}
+
+/* Toast theming */
+ion-toast {
+  // Hacer que se vaya 60px hacia arriba para que no tape el tab bar
+  height: calc(100% - 60px) !important;
+}
+
+ion-toast.toast-success {
+  --background: var(--ion-color-success-shade) !important;
+  --color: var(--ion-color-light) !important;
+}
+
+ion-toast.toast-error {
+  --background: var(--ion-color-danger-shade) !important;
+  --color: var(--ion-color-light) !important;
+}
+
+ion-toast.toast-warning {
+  --background: var(--ion-color-warning-shade) !important;
+  --color: var(--ion-color-light) !important;
+}
+
+ion-toast.toast-info {
+  --background: var(--ion-color-primary-shade) !important;
+  --color: var(--ion-color-light) !important;
+}
+
+/* Change color */
+.color-medium {
+  color: var(--ion-color-medium) !important;
+}
+
+.color-medium-to-children * {
+  color: var(--ion-color-medium) !important;
+}
+
+/* Change ionic components style */
+ion-searchbar {
+  padding: 0 !important;
 }

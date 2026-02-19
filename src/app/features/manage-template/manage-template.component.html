@@ -1,0 +1,73 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button color="primary" defaultHref="/tabs/templates"></ion-back-button>
+    </ion-buttons>
+
+    <ion-title class="header-title">
+      @if (isEditMode) {
+        Editar plantilla
+      } @else {
+        Crear plantilla
+      }
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding" [fullscreen]="true">
+  <main>
+    <input [(ngModel)]="name" placeholder="Nombre de la plantilla..." class="name-input" />
+    <div class="item-section">
+      <h4 class="section-title">Agregar objetos</h4>
+      <app-trip-button type="tertiary" id="open-modal" btnClass="flex center gap-2 padding-m">
+        <lucide-icon [img]="searchIcon" />
+        Buscar objetos
+      </app-trip-button>
+      <div class="items-container">
+        @for (item of selectedItems.values(); track item.id) {
+          <app-item-card-editable
+            [item]="item"
+            [quantity]="quantityByItemId.get(item.id) || 0"
+            (quantityChange)="handleQuantityChange(item, $event)"
+          />
+        }
+
+        @if (selectedItems.size === 0) {
+          <div class="no-items-container">
+            <lucide-icon [img]="shirtIcon" size="70" strokeWidth="1" class="no-items-icon" />
+            <p class="no-items-text">
+              Se ve un poco vacía... busca y agrega un objeto para empezar
+            </p>
+          </div>
+        }
+      </div>
+    </div>
+  </main>
+
+  <app-trip-button
+    [fill]="true"
+    class="save-button"
+    btnClass="flex center gap-2"
+    (click)="handleSaveTemplate()"
+  >
+    @if (isEditMode) {
+      <lucide-icon [img]="saveIcon" />
+      Guardar cambios
+    } @else {
+      <lucide-icon [img]="plusIcon" />
+      Crear plantilla
+    }
+  </app-trip-button>
+
+  <app-search-items-modal
+    [selectedItems]="selectedItems"
+    (itemSelected)="handleItemsSelected($event)"
+    (itemDeselected)="handleItemDeselected($event)"
+  />
+</ion-content>
+
+<app-remove-item-alert
+  [isAlertOpen]="isRemoveItemAlertOpen"
+  (confirmed)="onConfirmRemoveItem($event)"
+  (cancelled)="onCancelRemoveItem()"
+/>
