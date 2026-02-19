@@ -37,9 +37,10 @@ export class TemplateRepository {
     return Object.values(templatesMap);
   }
 
-  async createTemplate(name: string): Promise<void> {
-    await this.db.withConn(async (conn) => {
-      await conn.run('INSERT INTO template (name, deleted) VALUES (?, 0)', [name]);
+  async createTemplate(name: string): Promise<number | null> {
+    return this.db.withConn(async (conn) => {
+      const res = await conn.run('INSERT INTO template (name) VALUES (?)', [name]);
+      return res.changes?.lastId || null;
     });
   }
 
