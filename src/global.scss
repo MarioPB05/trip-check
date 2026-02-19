@@ -99,6 +99,32 @@ lucide-icon {
   display: contents;
 }
 
+/* Toast theming */
+ion-toast {
+  // Hacer que se vaya 60px hacia arriba para que no tape el tab bar
+  height: calc(100% - 60px) !important;
+}
+
+ion-toast.toast-success {
+  --background: var(--ion-color-success-shade) !important;
+  --color: var(--ion-color-light) !important;
+}
+
+ion-toast.toast-error {
+  --background: var(--ion-color-danger-shade) !important;
+  --color: var(--ion-color-light) !important;
+}
+
+ion-toast.toast-warning {
+  --background: var(--ion-color-warning-shade) !important;
+  --color: var(--ion-color-light) !important;
+}
+
+ion-toast.toast-info {
+  --background: var(--ion-color-primary-shade) !important;
+  --color: var(--ion-color-light) !important;
+}
+
 /* Change color */
 .color-medium {
   color: var(--ion-color-medium) !important;
