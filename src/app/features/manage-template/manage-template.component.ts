@@ -45,6 +45,8 @@ export class ManageTemplateComponent implements OnInit {
   selectedItemToRemove: Item | null = null;
   isEditMode = false;
 
+  // Campos de la plantilla
+  protected name: string = '';
   protected selectedItems: Map<number, Item> = new Map<number, Item>();
   protected quantityByItemId: Map<number, number> = new Map<number, number>();
 

@@ -16,7 +16,7 @@
 
 <ion-content class="ion-padding" [fullscreen]="true">
   <main>
-    <input placeholder="Nombre de la plantilla..." class="name-input" />
+    <input [(ngModel)]="name" placeholder="Nombre de la plantilla..." class="name-input" />
     <div class="item-section">
       <h4 class="section-title">Agregar objetos</h4>
       <app-trip-button type="tertiary" id="open-modal" btnClass="flex center gap-2 padding-m">
