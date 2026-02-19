@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import {
   IonBackButton,
   IonButtons,
@@ -6,6 +6,7 @@ import {
   IonHeader,
   IonTitle,
   IonToolbar,
+  ViewWillLeave,
 } from '@ionic/angular/standalone';
 import { ItemCardEditableComponent } from '@shared/components/item-card-editable/item-card-editable.component';
 import { Item } from '@core/models/item.model';
@@ -14,6 +15,13 @@ import { LucideAngularModule, Plus, Save, Search, Shirt } from 'lucide-angular';
 import { RemoveItemAlertComponent } from '@features/manage-template/components/remove-item-alert/remove-item-alert.component';
 import { SearchItemsModalComponent } from '@features/manage-template/components/search-items-modal/search-items-modal.component';
 import { PreferencesService } from '@core/services/preferences.service';
+import { FormsModule } from '@angular/forms';
+import { LoadingService } from '@core/services/loading.service';
+import { TemplateService } from '@features/manage-template/services/template.service';
+import { ActivatedRoute, Router } from '@angular/router';
+import { NavigationToastService } from '@core/services/navigationToast.service';
+import { Template } from '@core/models/template.model';
+import { ViewWillEnter } from '@ionic/angular';
 
 @Component({
   selector: 'app-create-template',
@@ -31,29 +39,77 @@ import { PreferencesService } from '@core/services/preferences.service';
     LucideAngularModule,
     RemoveItemAlertComponent,
     SearchItemsModalComponent,
+    FormsModule,
   ],
 })
-export class ManageTemplateComponent implements OnInit {
+export class ManageTemplateComponent implements ViewWillEnter, ViewWillLeave {
   protected readonly searchIcon = Search;
   protected readonly saveIcon = Save;
   protected readonly plusIcon = Plus;
   protected readonly shirtIcon = Shirt;
   private readonly preferencesService = inject(PreferencesService);
+  private readonly loadingService = inject(LoadingService);
+  private readonly templateService: TemplateService = inject(TemplateService);
+  private readonly router: Router = inject(Router);
+  private readonly route = inject(ActivatedRoute);
+  private readonly navigationToastService = inject(NavigationToastService);
 
   isRemoveItemAlertSuppressed = false;
   isRemoveItemAlertOpen = false;
   selectedItemToRemove: Item | null = null;
-  isEditMode = false;
+
+  // Si es edit mode
+  protected _template = signal<Template | null>(null);
 
   // Campos de la plantilla
   protected name: string = '';
   protected selectedItems: Map<number, Item> = new Map<number, Item>();
   protected quantityByItemId: Map<number, number> = new Map<number, number>();
 
-  ngOnInit() {
-    this.preferencesService.get<boolean>('suppressRemoveItemAlert').then((value) => {
-      this.isRemoveItemAlertSuppressed = value ?? false;
+  async ionViewWillEnter(): Promise<void> {
+    this.initializeTemplateMode();
+    await this.loadPreferences();
+  }
+
+  ionViewWillLeave(): void {
+    // Eliminar el foco para evitar warnings
+    (document.activeElement as HTMLElement)?.blur();
+  }
+
+  private initializeTemplateMode(): void {
+    const resolvedTemplate = this.route.snapshot.data['template'] as Template | undefined;
+
+    if (resolvedTemplate) {
+      this._template.set(resolvedTemplate);
+      this.setAllTemplateFields(resolvedTemplate);
+      return;
+    }
+
+    this._template.set(null);
+    this.emptyAllTemplateFields();
+  }
+
+  private async loadPreferences(): Promise<void> {
+    const value = await this.preferencesService.get<boolean>('suppressRemoveItemAlert');
+    this.isRemoveItemAlertSuppressed = value ?? false;
+  }
+
+  setAllTemplateFields(template: Template): void {
+    this.name = template.name;
+    template.items.forEach((templateItem) => {
+      this.selectedItems.set(templateItem.item.id, templateItem.item);
+      this.quantityByItemId.set(templateItem.item.id, templateItem.quantity);
     });
+  }
+
+  emptyAllTemplateFields(): void {
+    this.name = '';
+    this.selectedItems.clear();
+    this.quantityByItemId.clear();
+  }
+
+  get isEditMode(): boolean {
+    return this._template() !== null;
   }
 
   removeItem(itemId: number): void {
@@ -115,7 +171,55 @@ export class ManageTemplateComponent implements OnInit {
     this.removeItem(item.id);
   }
 
-  protected handleSaveTemplate() {
-    console.log('Saving template with items');
+  protected async handleSaveTemplate() {
+    if (!this.name.trim()) {
+      // TODO: Show validation error
+      console.warn('Template name is required');
+      return;
+    }
+
+    if (this.isEditMode) {
+      await this.updateTemplate();
+      return;
+    }
+
+    await this.createTemplate();
+  }
+
+  private async createTemplate(): Promise<void> {
+    try {
+      this.loadingService.show('Creando plantilla...');
+
+      await this.templateService.createTemplate(this.name, this.quantityByItemId);
+
+      this.navigateToTemplateList('Plantilla creada exitosamente');
+    } catch (error) {
+      // TODO: Handle error, show toast, etc.
+    } finally {
+      this.loadingService.hide();
+    }
+  }
+
+  private async updateTemplate(): Promise<void> {
+    try {
+      this.loadingService.show('Actualizando plantilla...');
+
+      await this.templateService.updateTemplate(
+        this._template()!.id,
+        this.name,
+        this.quantityByItemId,
+      );
+
+      this.navigateToTemplateList('Plantilla actualizada exitosamente');
+    } catch (error) {
+      // TODO: Handle error, show toast, etc.
+    } finally {
+      this.loadingService.hide();
+    }
+  }
+
+  private navigateToTemplateList(message: string): void {
+    this.navigationToastService.setToast('success', message);
+    this.router.navigate(['/tabs/templates']);
   }
 }
