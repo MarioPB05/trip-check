@@ -1,10 +1,12 @@
 import { inject, Injectable } from '@angular/core';
 import { DatabaseService } from '@core/services/database.service';
 import { Template } from '@core/models/template.model';
+import { EmojiService } from '@core/services/emoji.service';
 
 @Injectable({ providedIn: 'root' })
 export class TemplateRepository {
   private readonly db = inject(DatabaseService);
+  private readonly emojiService = inject(EmojiService);
 
   formatDBResultToTemplates(rows: any[]): Template[] {
     const templatesMap: { [key: number]: Template } = {};
@@ -27,7 +29,7 @@ export class TemplateRepository {
           item: {
             id: row['item_id'],
             name: row['item_name'],
-            emojiUrl: row['item_emoji'],
+            emojiUrl: this.emojiService.getEmojiUrl(row['item_emoji']),
             deleted: false,
           },
         });
