@@ -20,10 +20,12 @@
     <div class="templates-container">
       @for (template of filtratedTemplates; track template.id) {
         <app-location-items [location]="template" [items]="template.items">
-          <app-trip-button type="tertiary" class="see-all-button" btnClass="padding-s">
-            Ver
-          </app-trip-button>
-          <app-trip-button type="tertiary" class="see-all-button" btnClass="padding-s">
+          <app-trip-button
+            type="tertiary"
+            class="see-all-button"
+            btnClass="padding-s"
+            [routerLink]="['edit', template.id]"
+          >
             Editar
           </app-trip-button>
         </app-location-items>
