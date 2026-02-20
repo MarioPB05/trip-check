@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { IonContent, IonSearchbar, ViewWillLeave } from '@ionic/angular/standalone';
 import { LucideAngularModule, Plus, Search } from 'lucide-angular';
 import { TripButtonComponent } from '@shared/components/trip-button/trip-button.component';
@@ -11,6 +11,8 @@ import { RouterLink } from '@angular/router';
 import { ToastService } from '@core/services/toast.service';
 import { ViewWillEnter } from '@ionic/angular';
 import { NavigationToastService } from '@core/services/navigationToast.service';
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { debounceTime, distinctUntilChanged } from 'rxjs';
 
 @Component({
   selector: 'app-template-tab',
@@ -24,9 +26,10 @@ import { NavigationToastService } from '@core/services/navigationToast.service';
     NoTemplatesAlertComponent,
     IonSearchbar,
     RouterLink,
+    ReactiveFormsModule,
   ],
 })
-export class TemplateTabComponent implements ViewWillEnter, ViewWillLeave {
+export class TemplateTabComponent implements ViewWillEnter, ViewWillLeave, OnInit {
   protected readonly Plus = Plus;
   protected readonly Search = Search;
   private readonly templateService = inject(TemplateService);
@@ -36,7 +39,16 @@ export class TemplateTabComponent implements ViewWillEnter, ViewWillLeave {
 
   templates: Template[] = [];
   filtratedTemplates: Template[] = [];
-  searchTerm: string = '';
+  protected searchControl = new FormControl('');
+
+  ngOnInit() {
+    // Listen to search input changes with debounce
+    this.searchControl.valueChanges
+      .pipe(debounceTime(300), distinctUntilChanged())
+      .subscribe((searchTerm) => {
+        this.onSearchChange(searchTerm);
+      });
+  }
 
   ionViewWillEnter(): void {
     const toast = this.navigationToastService.consumeToast();
@@ -62,12 +74,13 @@ export class TemplateTabComponent implements ViewWillEnter, ViewWillLeave {
     (document.activeElement as HTMLElement)?.blur();
   }
 
-  onSearchChange(event: Event): void {
-    const input = event.target as HTMLInputElement | null;
-    this.searchTerm = input?.value.trim().toLowerCase() ?? '';
+  onSearchChange(searchTerm: string | null) {
+    if (searchTerm === null) {
+      searchTerm = '';
+    }
 
     this.filtratedTemplates = this.templates.filter((template) =>
-      template.name.toLowerCase().includes(this.searchTerm),
+      template.name.toLowerCase().includes(searchTerm),
     );
   }
 }
