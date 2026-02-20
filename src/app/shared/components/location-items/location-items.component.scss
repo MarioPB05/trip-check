@@ -55,5 +55,17 @@
       pointer-events: none;
       background: linear-gradient(to left, var(--ion-color-dark), transparent);
     }
+
+    .no-items-container {
+      color: var(--ion-color-medium);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      width: 100%;
+      border: 2px solid var(--ion-color-dark-gray);
+      border-radius: 0.5rem;
+      padding: 1rem;
+    }
   }
 }
