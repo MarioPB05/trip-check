@@ -14,6 +14,13 @@
       @for (itemWithQuantity of items; track itemWithQuantity.item.id) {
         <app-item-card [item]="itemWithQuantity.item" [quantity]="itemWithQuantity.quantity" />
       }
+
+      @if (items.length === 0) {
+        <div class="no-items-container">
+          <lucide-icon [img]="shirtIcon" size="40" strokeWidth="1" class="no-items-icon" />
+          <p class="no-items-text">No hay objetos en esta plantilla</p>
+        </div>
+      }
     </div>
     <div class="carrousel-shadow"></div>
   </div>
