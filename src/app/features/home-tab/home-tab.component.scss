@@ -1,4 +1,3 @@
-
 .home-tab-container {
   display: flex;
   flex-direction: column;
@@ -45,7 +44,7 @@ section {
   color: var(--ion-color-medium);
 }
 
-.trips-organization:not(:first-child){
+.trips-organization:not(:first-child) {
   margin-top: 1rem;
 }
 
