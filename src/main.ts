@@ -1,3 +1,4 @@
+import { provideZoneChangeDetection } from '@angular/core';
 import { AppModule } from '@app/app.module';
 import { defineCustomElements as jeepSqliteDefineCustomElements } from 'jeep-sqlite/loader';
 import { platformBrowser } from '@angular/platform-browser';
@@ -18,5 +19,5 @@ addIcons({
 jeepSqliteDefineCustomElements(window);
 
 platformBrowser()
-  .bootstrapModule(AppModule)
+  .bootstrapModule(AppModule, { applicationProviders: [provideZoneChangeDetection()] })
   .catch((err) => console.log(err));
