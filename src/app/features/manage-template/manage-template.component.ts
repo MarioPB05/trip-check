@@ -153,6 +153,7 @@ export class ManageTemplateComponent implements ViewWillEnter, ViewWillLeave {
 
     if (this.isRemoveItemAlertSuppressed) {
       this.preferencesService.set('suppressRemoveItemAlert', true).catch(async () => {
+        this.isRemoveItemAlertSuppressed = false;
         await this.errorModalService.show(errorMessage);
       });
     }
