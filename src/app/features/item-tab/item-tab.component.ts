@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, OnDestroy, signal, computed } from '@angular/core';
 import { IonContent, IonSearchbar } from '@ionic/angular/standalone';
 import { ItemService } from '@features/item-tab/services/item.service';
 import { Item, ItemWithUsages } from '@core/models/item.model';
@@ -7,7 +7,8 @@ import { TripButtonComponent } from '@shared/components/trip-button/trip-button.
 import { LoadingService } from '@core/services/loading.service';
 import { LucideAngularModule, Plus, Search } from 'lucide-angular';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
-import { debounceTime, distinctUntilChanged } from 'rxjs';
+import { debounceTime, distinctUntilChanged, takeUntil } from 'rxjs';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-item-tab',
@@ -22,50 +23,57 @@ import { debounceTime, distinctUntilChanged } from 'rxjs';
     ReactiveFormsModule,
   ],
 })
-export class ItemTabComponent implements OnInit {
+export class ItemTabComponent implements OnInit, OnDestroy {
   private readonly itemService = inject(ItemService);
   private readonly loadingService = inject(LoadingService);
+  private readonly destroy$ = new Subject<void>();
 
-  protected originalItems: ItemWithUsages[] = [];
-  protected usedItems: Item[] = [];
-  protected notUsedItems: Item[] = [];
-  protected searchControl = new FormControl('');
+  private readonly searchTerm = signal<string>('');
+
+  protected readonly originalItems = signal<ItemWithUsages[]>([]);
+
+  protected readonly usedItems = computed(() =>
+    this.originalItems()
+      .filter((item) => item.name.toLowerCase().includes(this.searchTerm()))
+      .filter((item) => item.timesUsed > 0),
+  );
+
+  protected readonly unusedItems = computed(() =>
+    this.originalItems()
+      .filter((item) => item.name.toLowerCase().includes(this.searchTerm()))
+      .filter((item) => item.timesUsed <= 0),
+  );
+
+  protected readonly searchControl = new FormControl('');
   protected readonly Plus = Plus;
   protected readonly searchIcon = Search;
 
-  async ngOnInit() {
+  async ngOnInit(): Promise<void> {
     this.searchControl.valueChanges
-      .pipe(debounceTime(300), distinctUntilChanged())
-      .subscribe((searchTerm) => {
-        this.onSearchChange(searchTerm);
-      });
+      .pipe(debounceTime(300), distinctUntilChanged(), takeUntil(this.destroy$))
+      .subscribe((term) => this.searchTerm.set(term?.toLowerCase() ?? ''));
 
-    try {
-      this.loadingService.show('Cargando objetos...');
-      this.originalItems = await this.itemService.getAllItems();
-      this.usedItems = this.originalItems.filter((item) => item.timesUsed > 1);
-      this.notUsedItems = this.originalItems.filter((item) => item.timesUsed <= 0);
-    } catch (error) {
-      // TODO: Implement error handling logic
-    } finally {
-      this.loadingService.hide();
-    }
+    await this.loadItems();
   }
 
-  openItemDetails(item: Item) {
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
+  openItemDetails(_item: Item): void {
     // TODO: Implement item details opening logic
   }
 
-  onSearchChange(searchTerm: string | null) {
-    if (searchTerm === null) {
-      searchTerm = '';
+  private async loadItems(): Promise<void> {
+    try {
+      this.loadingService.show('Cargando objetos...');
+      this.originalItems.set(await this.itemService.getAllItems());
+    } catch (error) {
+      // TODO: Implement error handling logic
+      console.error('Error loading items:', error);
+    } finally {
+      this.loadingService.hide();
     }
-
-    const filterItems: ItemWithUsages[] = this.originalItems.filter((item) =>
-      item.name.toLowerCase().includes(searchTerm),
-    );
-
-    this.notUsedItems = filterItems.filter((item) => item.timesUsed <= 0);
-    this.usedItems = filterItems.filter((item) => item.timesUsed > 0);
   }
 }
