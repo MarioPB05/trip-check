@@ -13,21 +13,35 @@
     </app-trip-button>
   </div>
 
-  @if (usedItems.length > 0) {
+  <ion-searchbar placeholder="Buscar objetos..." [formControl]="searchControl" />
+
+  @if (usedItems().length > 0) {
     <div class="items-container">
-      @for (item of usedItems; track item.id) {
+      @for (item of usedItems(); track item.id) {
         <app-item-card [item]="item" (handleClick)="openItemDetails($event)" />
       }
     </div>
   }
 
-  @if (notUsedItems.length > 0) {
+  @if (unusedItems().length > 0) {
     <h4>No usados</h4>
 
     <div class="items-container">
-      @for (item of notUsedItems; track item.id) {
+      @for (item of unusedItems(); track item.id) {
         <app-item-card [item]="item" (handleClick)="openItemDetails($event)" />
       }
+    </div>
+  }
+
+  @if (
+    originalItems().length !== 0 &&
+    usedItems().length === 0 &&
+    unusedItems().length === 0 &&
+    searchControl.value
+  ) {
+    <div class="no-results-container">
+      <lucide-icon [img]="searchIcon" size="70" class="no-results-icon" />
+      <p class="no-results-text">No se encontraron objetos que coincidan con tu búsqueda.</p>
     </div>
   }
 </ion-content>

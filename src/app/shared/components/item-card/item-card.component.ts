@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, HostBinding, Input, Output } from '@angular/core';
 import { Item } from '@core/models/item.model';
 import { NgOptimizedImage } from '@angular/common';
 
@@ -12,4 +12,5 @@ export class ItemCardComponent {
   @Input() item!: Item;
   @Input() quantity: number = -1;
   @Output() handleClick: EventEmitter<Item> = new EventEmitter();
+  @HostBinding('style.width') width = '100%';
 }
