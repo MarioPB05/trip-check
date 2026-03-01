@@ -16,7 +16,7 @@ export class ErrorModalService {
       await this.activeModal.dismiss();
     }
 
-    this.activeModal = await this.modalController.create({
+    const modal = await this.modalController.create({
       component: ErrorModalComponent,
       componentProps: {
         errorData: error,
@@ -26,11 +26,15 @@ export class ErrorModalService {
         'error-modal ' + (error.gravity === 'high' ? 'error-modal-high' : 'error-modal-low'),
     });
 
-    await this.activeModal.present();
+    this.activeModal = modal;
+    await modal.present();
 
-    // Limpieza automática al cerrar
-    await this.activeModal.onDidDismiss();
-    this.activeModal = undefined;
+    // Limpieza automática al cerrar (sin bloquear al llamador)
+    modal.onDidDismiss().then(() => {
+      if (this.activeModal === modal) {
+        this.activeModal = undefined;
+      }
+    });
   }
 
   async dismiss(): Promise<void> {
