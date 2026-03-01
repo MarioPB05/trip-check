@@ -9,6 +9,9 @@ import { LucideAngularModule, Plus, Search } from 'lucide-angular';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { debounceTime, distinctUntilChanged, takeUntil } from 'rxjs';
 import { Subject } from 'rxjs';
+import { ErrorModalService } from '@core/services/errorModal.service';
+import { ErrorInterface } from '@core/interfaces/error.interface';
+import { ServerError } from '@core/consts/error.consts';
 
 @Component({
   selector: 'app-item-tab',
@@ -26,6 +29,7 @@ import { Subject } from 'rxjs';
 export class ItemTabComponent implements OnInit, OnDestroy {
   private readonly itemService = inject(ItemService);
   private readonly loadingService = inject(LoadingService);
+  private readonly errorModalService = inject(ErrorModalService);
   private readonly destroy$ = new Subject<void>();
 
   private readonly searchTerm = signal<string>('');
@@ -70,8 +74,12 @@ export class ItemTabComponent implements OnInit, OnDestroy {
       this.loadingService.show('Cargando objetos...');
       this.originalItems.set(await this.itemService.getAllItems());
     } catch (error) {
-      // TODO: Implement error handling logic
-      console.error('Error loading items:', error);
+      const errorMessage: ErrorInterface = {
+        ...ServerError,
+        message: 'No se pudieron cargar los objetos. Por favor, inténtalo de nuevo más tarde.',
+      };
+
+      await this.errorModalService.show(errorMessage);
     } finally {
       this.loadingService.hide();
     }

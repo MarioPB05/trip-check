@@ -22,6 +22,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { NavigationToastService } from '@core/services/navigationToast.service';
 import { Template } from '@core/models/template.model';
 import { ViewWillEnter } from '@ionic/angular';
+import { ErrorModalService } from '@core/services/errorModal.service';
+import { GeneralError, ServerError, ValidationError } from '@core/consts/error.consts';
 
 @Component({
   selector: 'app-create-template',
@@ -47,12 +49,14 @@ export class ManageTemplateComponent implements ViewWillEnter, ViewWillLeave {
   protected readonly saveIcon = Save;
   protected readonly plusIcon = Plus;
   protected readonly shirtIcon = Shirt;
+
   private readonly preferencesService = inject(PreferencesService);
   private readonly loadingService = inject(LoadingService);
   private readonly templateService: TemplateService = inject(TemplateService);
   private readonly router: Router = inject(Router);
   private readonly route = inject(ActivatedRoute);
   private readonly navigationToastService = inject(NavigationToastService);
+  private readonly errorModalService = inject(ErrorModalService);
 
   isRemoveItemAlertSuppressed = false;
   isRemoveItemAlertOpen = false;
@@ -141,10 +145,16 @@ export class ManageTemplateComponent implements ViewWillEnter, ViewWillLeave {
     this.isRemoveItemAlertOpen = false;
     this.isRemoveItemAlertSuppressed = isNoAskAgainChecked;
 
+    const errorMessage = {
+      ...GeneralError,
+      message:
+        'No se pudo guardar tu preferencia para suprimir la alerta de eliminación. Por favor, inténtalo de nuevo más tarde.',
+    };
+
     if (this.isRemoveItemAlertSuppressed) {
-      this.preferencesService.set('suppressRemoveItemAlert', true).catch((error) => {
-        console.error('Error saving preference:', error);
-        // TODO: Handle error, show toast, etc.
+      this.preferencesService.set('suppressRemoveItemAlert', true).catch(async () => {
+        this.isRemoveItemAlertSuppressed = false;
+        await this.errorModalService.show(errorMessage);
       });
     }
 
@@ -173,8 +183,12 @@ export class ManageTemplateComponent implements ViewWillEnter, ViewWillLeave {
 
   protected async handleSaveTemplate() {
     if (!this.name.trim()) {
-      // TODO: Show validation error
-      console.warn('Template name is required');
+      const errorMessage = {
+        ...ValidationError,
+        message: 'El nombre de la plantilla no puede estar vacío.',
+      };
+
+      await this.errorModalService.show(errorMessage);
       return;
     }
 
@@ -194,7 +208,12 @@ export class ManageTemplateComponent implements ViewWillEnter, ViewWillLeave {
 
       this.navigateToTemplateList('Plantilla creada exitosamente');
     } catch (error) {
-      // TODO: Handle error, show toast, etc.
+      const errorMessage = {
+        ...ServerError,
+        message: 'No se pudo crear la plantilla. Por favor, inténtalo de nuevo más tarde.',
+      };
+
+      await this.errorModalService.show(errorMessage);
     } finally {
       this.loadingService.hide();
     }
@@ -212,7 +231,12 @@ export class ManageTemplateComponent implements ViewWillEnter, ViewWillLeave {
 
       this.navigateToTemplateList('Plantilla actualizada exitosamente');
     } catch (error) {
-      // TODO: Handle error, show toast, etc.
+      const errorMessage = {
+        ...ServerError,
+        message: 'No se pudo actualizar la plantilla. Por favor, inténtalo de nuevo más tarde.',
+      };
+
+      await this.errorModalService.show(errorMessage);
     } finally {
       this.loadingService.hide();
     }
