@@ -7,11 +7,7 @@ import { ItemRepository } from '@core/repositories/item.repository';
 export class ItemService {
   private readonly itemRepository = inject(ItemRepository);
 
-  async getAllItemsUsed() {
-    return await this.itemRepository.getAllItemsUsed();
-  }
-
-  async getAllItemsNotUsed() {
-    return await this.itemRepository.getAllItemsNotUsed();
+  async getAllItems() {
+    return await this.itemRepository.getAllItems();
   }
 }
