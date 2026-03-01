@@ -138,3 +138,45 @@ ion-toast.toast-info {
 ion-searchbar {
   padding: 0 !important;
 }
+
+/* Error modal */
+ion-modal.error-modal-high {
+  --modal-color: var(--ion-color-danger);
+  --icon-color: white;
+}
+
+ion-modal.error-modal-low {
+  --modal-color: var(--ion-color-warning);
+  --icon-color: var(--ion-color-dark, #2d2d2f);
+}
+
+ion-modal.error-modal {
+  --height: 260px;
+  --width: 80%;
+  --max-width: 400px;
+  --border-radius: 0.5rem;
+}
+
+ion-modal.error-modal h2 {
+  color: var(--modal-color);
+}
+
+ion-modal.error-modal ion-header {
+  background: var(--modal-color);
+  --color: white;
+}
+
+ion-modal.error-modal ion-content::part(scroll) {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 1rem;
+  padding: 1.5rem;
+  height: 100%;
+}
+
+ion-modal.error-modal ion-content::part(background) {
+  height: 100px !important;
+}
