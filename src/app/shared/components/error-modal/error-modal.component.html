@@ -1,0 +1,12 @@
+<ion-header class="ion-text-center ion-padding">
+  <lucide-icon
+    [img]="iconByErrorType[errorData.type]"
+    size="50"
+    class="lucide-icon"
+    color="var(--icon-color)"
+  ></lucide-icon>
+</ion-header>
+<ion-content [scrollY]="false">
+  <h2>{{ errorData.title }}</h2>
+  <p>{{ errorData.message }}</p>
+</ion-content>
