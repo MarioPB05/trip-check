@@ -9,7 +9,6 @@ import {
   alertCircleOutline,
   informationCircleOutline,
 } from 'ionicons/icons';
-
 addIcons({
   'checkmark-circle-outline': checkmarkCircleOutline,
   'close-circle-outline': closeCircleOutline,
@@ -19,5 +18,7 @@ addIcons({
 jeepSqliteDefineCustomElements(window);
 
 platformBrowser()
-  .bootstrapModule(AppModule, { applicationProviders: [provideZoneChangeDetection()] })
+  .bootstrapModule(AppModule, {
+    applicationProviders: [provideZoneChangeDetection()],
+  })
   .catch((err) => console.log(err));
