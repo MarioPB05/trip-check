@@ -13,6 +13,8 @@
     </app-trip-button>
   </div>
 
+  <ion-searchbar placeholder="Buscar objetos..." [formControl]="searchControl" />
+
   @if (usedItems.length > 0) {
     <div class="items-container">
       @for (item of usedItems; track item.id) {
@@ -28,6 +30,13 @@
       @for (item of notUsedItems; track item.id) {
         <app-item-card [item]="item" (handleClick)="openItemDetails($event)" />
       }
+    </div>
+  }
+
+  @if (usedItems.length === 0 && notUsedItems.length === 0 && searchControl.value) {
+    <div class="no-results-container">
+      <lucide-icon [img]="searchIcon" size="70" class="no-results-icon" />
+      <p class="no-results-text">No se encontraron objetos que coincidan con tu búsqueda.</p>
     </div>
   }
 </ion-content>
