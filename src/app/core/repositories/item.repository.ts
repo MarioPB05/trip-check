@@ -30,7 +30,7 @@ export class ItemRepository {
   getAllItems(): Promise<ItemWithUsages[]> {
     return this.db.withConn(async (conn) => {
       const res = await conn.query(`
-        SELECT i.id, i.name, i.emoji, i.deleted, CASE WHEN i.name = 'Calzoncillo' THEN 10 ELSE COALESCE(u.times_used, 0) END AS times_used
+        SELECT i.id, i.name, i.emoji, i.deleted, COALESCE(u.times_used, 0) AS times_used
         FROM item AS i
         LEFT JOIN (
           SELECT item_id, COUNT(*) AS times_used
