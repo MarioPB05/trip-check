@@ -2,6 +2,7 @@ h4 {
   font-size: 1.2rem;
   color: var(--ion-color-medium);
   margin-top: 1rem;
+  padding-left: 1rem;
 }
 
 .toolbar {
@@ -9,20 +10,30 @@ h4 {
   margin-bottom: 1.5rem;
 }
 
+ion-searchbar {
+  margin-top: 2rem;
+  margin-bottom: 0.2rem;
+}
+
 .items-container {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
   align-content: center;
   justify-items: center;
-  gap: 16px;
-  padding: 16px;
-
-  app-item-card {
-    width: fit-content;
-  }
+  gap: 1rem;
+  padding: 1rem;
 
   app-item-card:active {
     transform: scale(0.95);
     transition: transform 0.1s ease-in-out;
   }
+}
+
+.no-results-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 2rem;
+  padding: 2rem;
+  color: var(--ion-color-medium);
 }
