@@ -1,4 +1,3 @@
-
 .items-container {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
@@ -22,6 +21,6 @@
 }
 
 .selected {
-  border: 2px solid var(--ion-color-tertiary)!important;
+  border: 2px solid var(--ion-color-tertiary) !important;
   border-radius: 0.5rem;
 }
