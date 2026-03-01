@@ -12,6 +12,8 @@ import { ItemService } from '@features/manage-template/services/item.service';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { debounceTime, distinctUntilChanged } from 'rxjs';
 import { LucideAngularModule, Search } from 'lucide-angular';
+import { ServerError } from '@core/consts/error.consts';
+import { ErrorModalService } from '@core/services/errorModal.service';
 
 @Component({
   selector: 'app-search-items-modal',
@@ -31,6 +33,7 @@ import { LucideAngularModule, Search } from 'lucide-angular';
 export class SearchItemsModalComponent implements OnInit {
   protected readonly searchIcon = Search;
   private readonly itemsService: ItemService = inject(ItemService);
+  private readonly errorModalService = inject(ErrorModalService);
   private readonly PAGE_SIZE = 20;
 
   @Input() selectedItems: Map<number, Item> = new Map<number, Item>();
@@ -62,7 +65,12 @@ export class SearchItemsModalComponent implements OnInit {
         this.allItemsLoaded = true;
       }
     } catch (error) {
-      // TODO: Handle error, show toast, etc.
+      const errorMessage = {
+        ...ServerError,
+        message: 'No se pudieron cargar los objetos. Por favor, inténtalo de nuevo más tarde.',
+      };
+
+      await this.errorModalService.show(errorMessage);
     }
   }
 
@@ -90,8 +98,6 @@ export class SearchItemsModalComponent implements OnInit {
       $event.target.complete();
       return;
     }
-
-    console.log('Loading more items...');
 
     await this.loadItems(
       this.searchControl.value ?? '',

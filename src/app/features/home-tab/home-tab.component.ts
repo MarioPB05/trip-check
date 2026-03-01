@@ -9,6 +9,9 @@ import { TripButtonComponent } from '@shared/components/trip-button/trip-button.
 import { LucideAngularModule, Plus } from 'lucide-angular';
 import { TripService } from '@features/home-tab/services/trip.service';
 import { LoadingService } from '@core/services/loading.service';
+import { ErrorModalService } from '@core/services/errorModal.service';
+import { ServerError } from '@core/consts/error.consts';
+import { ErrorInterface } from '@core/interfaces/error.interface';
 
 @Component({
   selector: 'app-home-tab',
@@ -28,6 +31,7 @@ export class HomeTabComponent implements OnInit {
   protected readonly Plus = Plus;
   private readonly tripService = inject(TripService);
   private readonly loadingService = inject(LoadingService);
+  private readonly errorModalService = inject(ErrorModalService);
 
   currentTrips: CurrentTripDetails[] = [];
   futureTrips: Trip[] = [];
@@ -58,8 +62,12 @@ export class HomeTabComponent implements OnInit {
       this.futureTrips = await this.tripService.getAllFutureTrips();
       this.organizeTrips();
     } catch (error) {
-      console.error('Error loading trips in HomeTabComponent:', error);
-      // TODO: Implement user-friendly error handling (e.g., show a toast notification)
+      const errorMessage: ErrorInterface = {
+        ...ServerError,
+        message: 'Ocurrió un error al cargar tus viajes. Por favor, inténtalo de nuevo más tarde.',
+      };
+
+      await this.errorModalService.show(errorMessage);
     } finally {
       this.loadingService.hide();
     }
