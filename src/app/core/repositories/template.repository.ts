@@ -47,7 +47,7 @@ export class TemplateRepository {
         LEFT JOIN template_item ti on t.id = ti.template_id
         LEFT JOIN item i on ti.item_id = i.id and i.deleted = 0
         WHERE t.deleted = 0
-        ORDER BY t.id
+        ORDER BY t.id DESC
       `);
 
       return this.formatDBResultToTemplates(res.values || []);
