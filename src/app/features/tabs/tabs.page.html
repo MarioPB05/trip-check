@@ -1,16 +1,16 @@
 <ion-tabs>
   <ion-tab-bar slot="bottom">
-    <ion-tab-button tab="items" href="/tabs/items">
+    <ion-tab-button tab="items" [routerLink]="'/tabs/items'">
       <lucide-icon name="shirt" [strokeWidth]="1"></lucide-icon>
       <ion-label>Objetos</ion-label>
     </ion-tab-button>
 
-    <ion-tab-button tab="home" href="/tabs/home">
+    <ion-tab-button tab="home" [routerLink]="'/tabs/home'">
       <lucide-icon name="plane" [strokeWidth]="1"></lucide-icon>
       <ion-label>Viajes</ion-label>
     </ion-tab-button>
 
-    <ion-tab-button tab="templates" href="/tabs/templates">
+    <ion-tab-button tab="templates" [routerLink]="'/tabs/templates'">
       <lucide-icon name="briefcase" [strokeWidth]="1"></lucide-icon>
       <ion-label>Plantillas</ion-label>
     </ion-tab-button>

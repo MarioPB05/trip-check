@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { RouterLink } from '@angular/router';
 
 import { TabsPageRoutingModule } from './tabs-routing.module';
 
@@ -12,6 +13,7 @@ import { Briefcase, LucideAngularModule, Plane, Shirt } from 'lucide-angular';
   imports: [
     CommonModule,
     FormsModule,
+    RouterLink,
     TabsPageRoutingModule,
     IonTabs,
     IonTabBar,
