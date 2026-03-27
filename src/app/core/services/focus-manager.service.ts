@@ -1,27 +1,14 @@
-import { Injectable } from '@angular/core';
-import { Router, NavigationStart } from '@angular/router';
-import { filter } from 'rxjs/operators';
+import { inject, Injectable } from '@angular/core';
+import { DOCUMENT } from '@angular/common';
 
 @Injectable({
   providedIn: 'root',
 })
 export class FocusManagerService {
-  constructor(private router: Router) {
-    this.initializeFocusHandling();
-  }
+  private readonly document = inject(DOCUMENT);
 
-  private initializeFocusHandling(): void {
-    // Subscription intentionally not unsubscribed: this service is a root singleton
-    // that lives for the entire application lifetime.
-    this.router.events
-      .pipe(filter((event) => event instanceof NavigationStart))
-      .subscribe(() => {
-        this.clearActiveElement();
-      });
-  }
-
-  private clearActiveElement(): void {
-    const activeElement = document.activeElement as HTMLElement | null;
+  clearActiveElement(): void {
+    const activeElement = this.document.activeElement as HTMLElement | null;
 
     if (activeElement && typeof activeElement.blur === 'function') {
       activeElement.blur();
