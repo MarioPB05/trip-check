@@ -1,6 +1,10 @@
 import { Component, inject, OnInit } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { Router, NavigationStart } from '@angular/router';
+import { filter } from 'rxjs';
 import { DatabaseService } from '@core/services/database.service';
 import { LoadingService } from '@core/services/loading.service';
+import { FocusManagerService } from '@core/services/focus-manager.service';
 
 @Component({
   selector: 'app-root',
@@ -11,11 +15,22 @@ import { LoadingService } from '@core/services/loading.service';
 export class AppComponent implements OnInit {
   private databaseService = inject(DatabaseService);
   private loadingService = inject(LoadingService);
+  private focusManagerService = inject(FocusManagerService);
+  private router = inject(Router);
 
   loading$ = this.loadingService.loading$;
   message$ = this.loadingService.message$;
 
-  constructor() {}
+  constructor() {
+    this.router.events
+      .pipe(
+        filter((event) => event instanceof NavigationStart),
+        takeUntilDestroyed(),
+      )
+      .subscribe(() => {
+        this.focusManagerService.clearActiveElement();
+      });
+  }
 
   async ngOnInit() {
     this.loadingService.show('Iniciando base de datos...');
