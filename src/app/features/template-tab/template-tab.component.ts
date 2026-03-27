@@ -1,5 +1,5 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { IonContent, IonSearchbar, ViewWillLeave } from '@ionic/angular/standalone';
+import { IonContent, IonSearchbar } from '@ionic/angular/standalone';
 import { LucideAngularModule, Plus, Search } from 'lucide-angular';
 import { TripButtonComponent } from '@shared/components/trip-button/trip-button.component';
 import { LocationItemsComponent } from '@shared/components/location-items/location-items.component';
@@ -29,7 +29,7 @@ import { debounceTime, distinctUntilChanged } from 'rxjs';
     ReactiveFormsModule,
   ],
 })
-export class TemplateTabComponent implements ViewWillEnter, ViewWillLeave, OnInit {
+export class TemplateTabComponent implements ViewWillEnter, OnInit {
   protected readonly Plus = Plus;
   protected readonly Search = Search;
   private readonly templateService = inject(TemplateService);
@@ -67,11 +67,6 @@ export class TemplateTabComponent implements ViewWillEnter, ViewWillLeave, OnIni
       this.loadingService.hide();
       console.error('Error loading templates');
     }
-  }
-
-  ionViewWillLeave(): void {
-    // Eliminar el foco para evitar warnings
-    (document.activeElement as HTMLElement)?.blur();
   }
 
   onSearchChange(searchTerm: string | null) {

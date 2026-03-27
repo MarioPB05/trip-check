@@ -6,7 +6,6 @@ import {
   IonHeader,
   IonTitle,
   IonToolbar,
-  ViewWillLeave,
 } from '@ionic/angular/standalone';
 import { ItemCardEditableComponent } from '@shared/components/item-card-editable/item-card-editable.component';
 import { Item } from '@core/models/item.model';
@@ -44,7 +43,7 @@ import { GeneralError, ServerError, ValidationError } from '@core/consts/error.c
     FormsModule,
   ],
 })
-export class ManageTemplateComponent implements ViewWillEnter, ViewWillLeave {
+export class ManageTemplateComponent implements ViewWillEnter {
   protected readonly searchIcon = Search;
   protected readonly saveIcon = Save;
   protected readonly plusIcon = Plus;
@@ -73,11 +72,6 @@ export class ManageTemplateComponent implements ViewWillEnter, ViewWillLeave {
   async ionViewWillEnter(): Promise<void> {
     this.initializeTemplateMode();
     await this.loadPreferences();
-  }
-
-  ionViewWillLeave(): void {
-    // Eliminar el foco para evitar warnings
-    (document.activeElement as HTMLElement)?.blur();
   }
 
   private initializeTemplateMode(): void {

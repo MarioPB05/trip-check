@@ -1,6 +1,7 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { DatabaseService } from '@core/services/database.service';
 import { LoadingService } from '@core/services/loading.service';
+import { FocusManagerService } from '@core/services/focus-manager.service';
 
 @Component({
   selector: 'app-root',
@@ -11,6 +12,7 @@ import { LoadingService } from '@core/services/loading.service';
 export class AppComponent implements OnInit {
   private databaseService = inject(DatabaseService);
   private loadingService = inject(LoadingService);
+  private focusManagerService = inject(FocusManagerService);
 
   loading$ = this.loadingService.loading$;
   message$ = this.loadingService.message$;
