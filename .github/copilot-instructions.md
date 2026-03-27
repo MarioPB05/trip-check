@@ -11,7 +11,7 @@ Trip Check is a mobile/web app built with **Angular 21**, **Ionic 8**, and **Cap
 | Mobile bridge   | Capacitor 8                                                    |
 | Language        | TypeScript 5.9, SCSS                                           |
 | Icons           | `lucide-angular`, `ionicons`                                   |
-| Database        | SQLite via `@capacitor-community/sqlite` + `jeep-sqlite` (web) |
+| Database        | SQLite via `@capacitor-community/sqlite` + `jeep-sqlite`/`sql.js` (web) |
 | Linter          | ESLint 9 + Angular ESLint + Prettier                           |
 | Package manager | npm                                                            |
 

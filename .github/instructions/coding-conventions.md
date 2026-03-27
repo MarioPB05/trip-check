@@ -28,14 +28,14 @@
 ## Language
 
 - **Code is written in English**: all identifiers (variables, functions, classes, files, selectors, etc.) must use English.
-- **Comments are written in Spanish**: inline comments, block comments, and JSDoc must be in Spanish.
+- **Comments should be written in Spanish** for new code. The codebase contains a mix of Spanish and English comments due to historical reasons; when adding or editing code, prefer Spanish for new inline comments, block comments, and JSDoc.
 
 ```typescript
-// ✅ Correcto
+// ✅ Preferido para código nuevo
 // Calcula el total de artículos en la ubicación actual
 const totalItems = locationItems.length;
 
-// ❌ Incorrecto — comentario en inglés
+// ⚠️ Aceptable en contexto existente (inglés histórico)
 // Calculate total items in the current location
 const totalItems = locationItems.length;
 ```

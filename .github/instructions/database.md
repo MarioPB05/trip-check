@@ -25,5 +25,5 @@
 - To add a new migration:
   1. Create the next numbered `.sql` file in `src/assets/db/migrations/`.
   2. Add a corresponding entry to the `migrations` array in `database.service.ts`.
-  3. Increment `dbVersion` in `database.service.ts`.
+  3. If `database.service.ts` defines a schema version constant (e.g., `dbVersion`), ensure its value and any related logic remain consistent with the migrations list; the numbered SQL files and `migrations` array are the source of truth for schema evolution.
 - **Do not** include `BEGIN` / `COMMIT` / `ROLLBACK` statements in migration scripts — the service handles transactionality internally.
