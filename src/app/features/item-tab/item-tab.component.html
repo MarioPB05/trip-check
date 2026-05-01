@@ -39,9 +39,6 @@
     unusedItems().length === 0 &&
     searchControl.value
   ) {
-    <div class="no-results-container">
-      <lucide-icon [img]="searchIcon" size="70" class="no-results-icon" />
-      <p class="no-results-text">No se encontraron objetos que coincidan con tu búsqueda.</p>
-    </div>
+    <app-search-empty-state target="objetos" />
   }
 </ion-content>
