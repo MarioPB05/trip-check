@@ -60,6 +60,7 @@ export class TemplateTabComponent implements ViewWillEnter, OnInit {
 
     try {
       this.loadingService.show('Cargando plantillas...');
+      this.searchControl.setValue('');
       this.templateService.getAllTemplates().then((templates) => {
         this.templates = templates;
         this.filtratedTemplates = templates;
