@@ -12,6 +12,7 @@ import { Subject } from 'rxjs';
 import { ErrorModalService } from '@core/services/errorModal.service';
 import { ErrorInterface } from '@core/interfaces/error.interface';
 import { ServerError } from '@core/consts/error.consts';
+import { SearchEmptyStateComponent } from '@shared/alerts/search-empty-state/search-empty-state.component';
 
 @Component({
   selector: 'app-item-tab',
@@ -24,6 +25,7 @@ import { ServerError } from '@core/consts/error.consts';
     LucideAngularModule,
     IonSearchbar,
     ReactiveFormsModule,
+    SearchEmptyStateComponent,
   ],
 })
 export class ItemTabComponent implements OnInit, OnDestroy {

@@ -36,10 +36,7 @@
       }
 
       @if (templates.length > 0 && filtratedTemplates.length === 0) {
-        <div class="no-results-container">
-          <lucide-icon [img]="Search" size="70" class="no-results-icon" />
-          <p class="no-results-text">No se encontraron plantillas que coincidan con tu búsqueda.</p>
-        </div>
+        <app-search-empty-state target="plantillas" />
       }
     </div>
   </div>

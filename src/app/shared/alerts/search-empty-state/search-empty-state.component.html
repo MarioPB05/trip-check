@@ -1,0 +1,15 @@
+<div class="search-empty-state-container">
+  @if (hasIcon) {
+    <lucide-icon [img]="Search" [size]="70" class="search-empty-state-icon" />
+  }
+
+  @if (fullMessage) {
+    <p class="search-empty-state-text">{{ fullMessage }}</p>
+  } @else if (target) {
+    <p class="search-empty-state-text">
+      No se encontraron {{ target }} que coincidan con tu búsqueda
+    </p>
+  }
+
+  <ng-content></ng-content>
+</div>

@@ -14,6 +14,7 @@ import { debounceTime, distinctUntilChanged } from 'rxjs';
 import { LucideAngularModule, Search } from 'lucide-angular';
 import { ServerError } from '@core/consts/error.consts';
 import { ErrorModalService } from '@core/services/errorModal.service';
+import { SearchEmptyStateComponent } from '@shared/alerts/search-empty-state/search-empty-state.component';
 
 @Component({
   selector: 'app-search-items-modal',
@@ -28,6 +29,7 @@ import { ErrorModalService } from '@core/services/errorModal.service';
     ItemCardComponent,
     ReactiveFormsModule,
     LucideAngularModule,
+    SearchEmptyStateComponent,
   ],
 })
 export class SearchItemsModalComponent implements OnInit {
