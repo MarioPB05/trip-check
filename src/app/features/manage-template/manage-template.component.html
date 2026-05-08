@@ -25,7 +25,12 @@
           <p class="no-items-text">Se ve un poco vacía... busca y agrega un objeto para empezar</p>
         </div>
       }
-      <app-trip-button type="tertiary" id="open-modal" btnClass="flex center gap-2 padding-m">
+      <app-trip-button
+        type="tertiary"
+        id="open-modal"
+        btnClass="flex center gap-2 padding-m"
+        (click)="openSearchItemsModal()"
+      >
         <lucide-icon [img]="searchIcon" />
         Buscar objetos
       </app-trip-button>
@@ -55,13 +60,15 @@
       Crear plantilla
     }
   </app-trip-button>
-
-  <app-search-items-modal
-    [selectedItems]="selectedItems"
-    (itemSelected)="handleItemsSelected($event)"
-    (itemDeselected)="handleItemDeselected($event)"
-  />
 </ion-content>
+
+<app-search-items-modal
+  [isOpen]="isSearchModalOpen"
+  [selectedItems]="selectedItems"
+  (itemSelected)="handleItemsSelected($event)"
+  (itemDeselected)="handleItemDeselected($event)"
+  (didDismiss)="closeSearchItemsModal()"
+/>
 
 <app-remove-item-alert
   [isAlertOpen]="isRemoveItemAlertOpen"

@@ -57,6 +57,8 @@ export class ManageTemplateComponent implements ViewWillEnter {
   private readonly navigationToastService = inject(NavigationToastService);
   private readonly errorModalService = inject(ErrorModalService);
 
+  isSearchModalOpen = false;
+
   isRemoveItemAlertSuppressed = false;
   isRemoveItemAlertOpen = false;
   selectedItemToRemove: Item | null = null;
