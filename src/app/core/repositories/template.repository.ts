@@ -132,4 +132,10 @@ export class TemplateRepository {
       );
     });
   }
+
+  async deleteTemplate(templateId: number): Promise<void> {
+    await this.db.withConn(async (conn) => {
+      await conn.run('UPDATE template SET deleted = 1 WHERE id = ?', [templateId]);
+    });
+  }
 }

@@ -15,7 +15,9 @@
   </div>
 
   <div class="templates-section">
-    <ion-searchbar placeholder="Buscar plantillas..." [formControl]="searchControl" />
+    @if (templates.length > 0) {
+      <ion-searchbar placeholder="Buscar plantillas..." [formControl]="searchControl" />
+    }
 
     <div class="templates-container">
       @for (template of filtratedTemplates; track template.id) {

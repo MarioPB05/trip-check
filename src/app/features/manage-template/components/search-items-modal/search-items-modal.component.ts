@@ -38,9 +38,11 @@ export class SearchItemsModalComponent implements OnInit {
   private readonly errorModalService = inject(ErrorModalService);
   private readonly PAGE_SIZE = 20;
 
+  @Input() isOpen = false;
   @Input() selectedItems: Map<number, Item> = new Map<number, Item>();
   @Output() itemSelected: EventEmitter<Item> = new EventEmitter<Item>();
   @Output() itemDeselected: EventEmitter<Item> = new EventEmitter<Item>();
+  @Output() didDismiss: EventEmitter<void> = new EventEmitter<void>();
 
   protected allItems: Item[] = [];
 
@@ -49,7 +51,22 @@ export class SearchItemsModalComponent implements OnInit {
 
   constructor() {}
 
-  private async loadItems(searchTerm: string, limit: number, offset: number, append = false) {
+  async ngOnInit() {
+    this.loadItems('', this.PAGE_SIZE, 0, false);
+
+    // Listen to search input changes with debounce
+    this.searchControl.valueChanges
+      .pipe(debounceTime(300), distinctUntilChanged())
+      .subscribe((searchTerm) => {
+        this.onSearchItem(searchTerm);
+      });
+  }
+
+  onDidDismiss() {
+    this.didDismiss.emit();
+  }
+
+  async loadItems(searchTerm: string, limit: number, offset: number, append = false) {
     try {
       const newItems = await this.itemsService.getPaginatedFilteredItems(
         searchTerm ?? '',
@@ -109,16 +126,5 @@ export class SearchItemsModalComponent implements OnInit {
     );
 
     $event.target.complete();
-  }
-
-  async ngOnInit() {
-    await this.loadItems('', this.PAGE_SIZE, 0, false);
-
-    // Listen to search input changes with debounce
-    this.searchControl.valueChanges
-      .pipe(debounceTime(300), distinctUntilChanged())
-      .subscribe((searchTerm) => {
-        this.onSearchItem(searchTerm);
-      });
   }
 }

@@ -16,7 +16,16 @@
 
 <ion-content class="ion-padding" [fullscreen]="true">
   <main>
-    <input [(ngModel)]="name" placeholder="Nombre de la plantilla..." class="name-input" />
+    <div class="name-section">
+      <input [(ngModel)]="name" placeholder="Nombre de la plantilla..." class="name-input" />
+
+      @if (isEditMode) {
+        <app-trip-button type="danger" [fill]="true" (click)="openDeleteTemplateAlert()">
+          <lucide-icon [img]="Trash" size="20" />
+        </app-trip-button>
+      }
+    </div>
+
     <div class="item-section">
       <h4 class="section-title">Agregar objetos</h4>
       @if (selectedItems.size === 0) {
@@ -25,7 +34,12 @@
           <p class="no-items-text">Se ve un poco vacía... busca y agrega un objeto para empezar</p>
         </div>
       }
-      <app-trip-button type="tertiary" id="open-modal" btnClass="flex center gap-2 padding-m">
+      <app-trip-button
+        type="tertiary"
+        id="open-modal"
+        btnClass="flex center gap-2 padding-m"
+        (click)="openSearchItemsModal()"
+      >
         <lucide-icon [img]="searchIcon" />
         Buscar objetos
       </app-trip-button>
@@ -55,16 +69,24 @@
       Crear plantilla
     }
   </app-trip-button>
-
-  <app-search-items-modal
-    [selectedItems]="selectedItems"
-    (itemSelected)="handleItemsSelected($event)"
-    (itemDeselected)="handleItemDeselected($event)"
-  />
 </ion-content>
+
+<app-search-items-modal
+  [isOpen]="isSearchModalOpen"
+  [selectedItems]="selectedItems"
+  (itemSelected)="handleItemsSelected($event)"
+  (itemDeselected)="handleItemDeselected($event)"
+  (didDismiss)="closeSearchItemsModal()"
+/>
 
 <app-remove-item-alert
   [isAlertOpen]="isRemoveItemAlertOpen"
   (confirmed)="onConfirmRemoveItem($event)"
   (cancelled)="onCancelRemoveItem()"
+/>
+
+<app-delete-template-alert
+  [isAlertOpen]="isDeleteTemplateAlertOpen"
+  (confirmed)="onConfirmDeleteTemplate()"
+  (cancelled)="onCancelDeleteTemplate()"
 />

@@ -1,4 +1,10 @@
-<ion-modal #modal trigger="open-modal" [initialBreakpoint]="0.5" [breakpoints]="[0, 0.5, 0.75, 1]">
+<ion-modal
+  #modal
+  [isOpen]="isOpen"
+  [initialBreakpoint]="0.5"
+  [breakpoints]="[0, 0.5, 0.75, 1]"
+  (didDismiss)="onDidDismiss()"
+>
   <ng-template>
     <ion-content class="ion-padding">
       <ion-searchbar
