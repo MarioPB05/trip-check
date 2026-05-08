@@ -10,7 +10,7 @@ import {
 import { ItemCardEditableComponent } from '@shared/components/item-card-editable/item-card-editable.component';
 import { Item } from '@core/models/item.model';
 import { TripButtonComponent } from '@shared/components/trip-button/trip-button.component';
-import { LucideAngularModule, Plus, Save, Search, Shirt } from 'lucide-angular';
+import { LucideAngularModule, Plus, Save, Search, Shirt, Trash } from 'lucide-angular';
 import { RemoveItemAlertComponent } from '@features/manage-template/components/remove-item-alert/remove-item-alert.component';
 import { SearchItemsModalComponent } from '@features/manage-template/components/search-items-modal/search-items-modal.component';
 import { PreferencesService } from '@core/services/preferences.service';
@@ -23,6 +23,7 @@ import { Template } from '@core/models/template.model';
 import { ViewWillEnter } from '@ionic/angular';
 import { ErrorModalService } from '@core/services/errorModal.service';
 import { GeneralError, ServerError, ValidationError } from '@core/consts/error.consts';
+import { DeleteTemplateAlertComponent } from '@features/manage-template/components/delete-template-alert/delete-template-alert.component';
 
 @Component({
   selector: 'app-create-template',
@@ -41,6 +42,7 @@ import { GeneralError, ServerError, ValidationError } from '@core/consts/error.c
     RemoveItemAlertComponent,
     SearchItemsModalComponent,
     FormsModule,
+    DeleteTemplateAlertComponent,
   ],
 })
 export class ManageTemplateComponent implements ViewWillEnter {
@@ -48,6 +50,7 @@ export class ManageTemplateComponent implements ViewWillEnter {
   protected readonly saveIcon = Save;
   protected readonly plusIcon = Plus;
   protected readonly shirtIcon = Shirt;
+  protected readonly Trash = Trash;
 
   private readonly preferencesService = inject(PreferencesService);
   private readonly loadingService = inject(LoadingService);
@@ -63,6 +66,8 @@ export class ManageTemplateComponent implements ViewWillEnter {
   isRemoveItemAlertOpen = false;
   selectedItemToRemove: Item | null = null;
 
+  isDeleteTemplateAlertOpen = false;
+
   // Si es edit mode
   protected _template = signal<Template | null>(null);
 
@@ -76,6 +81,7 @@ export class ManageTemplateComponent implements ViewWillEnter {
     await this.loadPreferences();
   }
 
+  // region Template
   private initializeTemplateMode(): void {
     const resolvedTemplate = this.route.snapshot.data['template'] as Template | undefined;
 
@@ -136,47 +142,9 @@ export class ManageTemplateComponent implements ViewWillEnter {
     this.selectedItemToRemove = item;
     this.isRemoveItemAlertOpen = true;
   }
+  // endregion
 
-  onConfirmRemoveItem(isNoAskAgainChecked: boolean): void {
-    this.isRemoveItemAlertOpen = false;
-    this.isRemoveItemAlertSuppressed = isNoAskAgainChecked;
-
-    const errorMessage = {
-      ...GeneralError,
-      message:
-        'No se pudo guardar tu preferencia para suprimir la alerta de eliminación. Por favor, inténtalo de nuevo más tarde.',
-    };
-
-    if (this.isRemoveItemAlertSuppressed) {
-      this.preferencesService.set('suppressRemoveItemAlert', true).catch(async () => {
-        this.isRemoveItemAlertSuppressed = false;
-        await this.errorModalService.show(errorMessage);
-      });
-    }
-
-    if (this.selectedItemToRemove != null) {
-      this.removeItem(this.selectedItemToRemove.id);
-      this.selectedItemToRemove = null;
-    }
-  }
-
-  onCancelRemoveItem(): void {
-    this.isRemoveItemAlertOpen = false;
-
-    if (this.selectedItemToRemove) {
-      this.quantityByItemId.set(this.selectedItemToRemove.id, 1);
-      this.selectedItemToRemove = null;
-    }
-  }
-
-  protected handleItemsSelected(item: Item) {
-    this.addItem(item);
-  }
-
-  protected handleItemDeselected(item: Item) {
-    this.removeItem(item.id);
-  }
-
+  // region Create or Update Template
   protected async handleSaveTemplate() {
     if (!this.name.trim()) {
       const errorMessage = {
@@ -242,4 +210,89 @@ export class ManageTemplateComponent implements ViewWillEnter {
     this.navigationToastService.setToast('success', message);
     this.router.navigate(['/tabs/templates']);
   }
+  // endregion
+
+  // region Search Items Modal
+  protected openSearchItemsModal() {
+    this.isSearchModalOpen = true;
+  }
+
+  protected closeSearchItemsModal() {
+    this.isSearchModalOpen = false;
+  }
+
+  protected handleItemsSelected(item: Item) {
+    this.addItem(item);
+  }
+
+  protected handleItemDeselected(item: Item) {
+    this.removeItem(item.id);
+  }
+  // endregion
+
+  // region Remove Item Alert
+  onConfirmRemoveItem(isNoAskAgainChecked: boolean): void {
+    this.isRemoveItemAlertOpen = false;
+    this.isRemoveItemAlertSuppressed = isNoAskAgainChecked;
+
+    const errorMessage = {
+      ...GeneralError,
+      message:
+        'No se pudo guardar tu preferencia para suprimir la alerta de eliminación. Por favor, inténtalo de nuevo más tarde.',
+    };
+
+    if (this.isRemoveItemAlertSuppressed) {
+      this.preferencesService.set('suppressRemoveItemAlert', true).catch(async () => {
+        this.isRemoveItemAlertSuppressed = false;
+        await this.errorModalService.show(errorMessage);
+      });
+    }
+
+    if (this.selectedItemToRemove != null) {
+      this.removeItem(this.selectedItemToRemove.id);
+      this.selectedItemToRemove = null;
+    }
+  }
+
+  onCancelRemoveItem(): void {
+    this.isRemoveItemAlertOpen = false;
+
+    if (this.selectedItemToRemove) {
+      this.quantityByItemId.set(this.selectedItemToRemove.id, 1);
+      this.selectedItemToRemove = null;
+    }
+  }
+  // endregion
+
+  // region Delete Template
+  protected openDeleteTemplateAlert() {
+    this.isDeleteTemplateAlertOpen = true;
+  }
+
+  protected onConfirmDeleteTemplate() {
+    this.isDeleteTemplateAlertOpen = false;
+    this.loadingService.show('Eliminando plantilla...');
+
+    this.templateService
+      .deleteTemplate(this._template()!.id)
+      .then(() => {
+        this.navigateToTemplateList('Plantilla eliminada exitosamente');
+      })
+      .catch(async () => {
+        const errorMessage = {
+          ...ServerError,
+          message: 'No se pudo eliminar la plantilla. Por favor, inténtalo de nuevo más tarde.',
+        };
+
+        await this.errorModalService.show(errorMessage);
+      })
+      .finally(() => {
+        this.loadingService.hide();
+      });
+  }
+
+  protected onCancelDeleteTemplate() {
+    this.isDeleteTemplateAlertOpen = false;
+  }
+  // endregion
 }

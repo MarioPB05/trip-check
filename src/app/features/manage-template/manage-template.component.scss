@@ -9,8 +9,15 @@ main > h2 {
   text-align: center;
 }
 
+.name-section {
+  display: flex;
+  gap: 1rem;
+  width: 100%;
+}
+
 .name-input {
   width: 100%;
+  flex: 1;
 }
 
 .item-section {
