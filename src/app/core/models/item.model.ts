@@ -13,3 +13,9 @@ export interface ItemWithQuantity {
 export interface ItemWithUsages extends Item {
   timesUsed: number;
 }
+
+export interface ItemStats {
+  totalQuantity: string;
+  lostQuantity: string;
+  usageFrequency: string;
+}

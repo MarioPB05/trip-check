@@ -4,6 +4,7 @@ import { ItemService } from '@features/item-tab/services/item.service';
 import { Item, ItemWithUsages } from '@core/models/item.model';
 import { ItemCardComponent } from '@shared/components/item-card/item-card.component';
 import { TripButtonComponent } from '@shared/components/trip-button/trip-button.component';
+import { Router } from '@angular/router';
 import { LoadingService } from '@core/services/loading.service';
 import { LucideAngularModule, Plus, Search } from 'lucide-angular';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
@@ -27,6 +28,7 @@ import { ServerError } from '@core/consts/error.consts';
   ],
 })
 export class ItemTabComponent implements OnInit, OnDestroy {
+  private readonly router = inject(Router);
   private readonly itemService = inject(ItemService);
   private readonly loadingService = inject(LoadingService);
   private readonly errorModalService = inject(ErrorModalService);
@@ -60,13 +62,13 @@ export class ItemTabComponent implements OnInit, OnDestroy {
     await this.loadItems();
   }
 
+  async openItemDetails(item: Item) {
+    await this.router.navigate(['/tabs/items', item.id]);
+  }
+
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
-  }
-
-  openItemDetails(_item: Item): void {
-    // TODO: Implement item details opening logic
   }
 
   private async loadItems(): Promise<void> {

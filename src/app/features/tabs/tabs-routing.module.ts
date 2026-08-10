@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { TabsPage } from './tabs.page';
 import { templateResolver } from '@features/manage-template/template.resolver';
+import { itemResolver } from '@features/item-details/item.resolver';
 
 const routes: Routes = [
   {
@@ -10,8 +11,23 @@ const routes: Routes = [
     children: [
       {
         path: 'items',
-        loadComponent: () =>
-          import('@features/item-tab/item-tab.component').then((m) => m.ItemTabComponent),
+        children: [
+          {
+            path: ':itemId',
+            resolve: {
+              item: itemResolver,
+            },
+            loadComponent: () =>
+              import('@features/item-details/item-details.component').then(
+                (m) => m.ItemDetailsComponent,
+              ),
+          },
+          {
+            path: '',
+            loadComponent: () =>
+              import('@features/item-tab/item-tab.component').then((m) => m.ItemTabComponent),
+          },
+        ],
       },
       {
         path: 'home',
