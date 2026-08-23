@@ -104,9 +104,8 @@ export class ItemRepository {
    * @returns Las unidades totales, o 0 si ningún viaje cumple los filtros.
    */
   getTotalQuantityThisYearInCompletedTrips(itemId: number): Promise<number> {
-    return this.db.withConn(async (conn) => {
-      const res = await conn.query(
-        `
+    return this.db.querySingleValue({
+      sql: `
           SELECT COALESCE(SUM(quantity), 0) AS total_quantity
           FROM location_item AS li
           JOIN location AS l ON l.id = li.start_location_id
@@ -114,14 +113,9 @@ export class ItemRepository {
           WHERE li.item_id = ?
           AND t.status = ? AND strftime('%Y', t.trip_start_date) = strftime('%Y', 'now')
           `,
-        [itemId, TripStatus.Completed],
-      );
-
-      if (res.values && res.values.length > 0) {
-        return res.values[0]['total_quantity'];
-      } else {
-        return 0;
-      }
+      values: [itemId, TripStatus.Completed],
+      column: 'total_quantity',
+      fallbackValue: 0,
     });
   }
 
@@ -138,9 +132,8 @@ export class ItemRepository {
    * @returns Las unidades totales que se han perdido, o 0 si no se ha perdido ninguna.
    */
   getLostQuantityInOngoingOrCompletedTrips(itemId: number): Promise<number> {
-    return this.db.withConn(async (conn) => {
-      const res = await conn.query(
-        `
+    return this.db.querySingleValue({
+      sql: `
           SELECT COALESCE(SUM(lost), 0) AS lost_quantity
           FROM location_item AS li
           JOIN location AS l ON l.id = li.start_location_id
@@ -148,30 +141,24 @@ export class ItemRepository {
           WHERE li.item_id = ?
           AND t.status IN (?,?)
           `,
-        [itemId, TripStatus.Ongoing, TripStatus.Completed],
-      );
-
-      if (res.values && res.values.length > 0) {
-        return res.values[0]['lost_quantity'];
-      } else {
-        return 0;
-      }
+      values: [itemId, TripStatus.Ongoing, TripStatus.Completed],
+      column: 'lost_quantity',
+      fallbackValue: 0,
     });
   }
 
   /**
    * Cuenta la cantidad de viajes completados en los que se llevó un objeto determinado.
-   * 
+   *
    * Si un objeto se llevó varias veces en un mismo viaje pero en distintas ubicaciones, se cuenta como un único viaje.
    * Si quitásemos el `DISTINCT` del `COUNT`, se contaría cada ubicación como un viaje distinto, lo cual no es correcto.
-   * 
+   *
    * @param itemId - El id del objeto.
    * @returns La cantidad de viajes completados en los que se llevaron dicho objeto.
    */
   getCompletedTripsCountWithItem(itemId: number): Promise<number> {
-    return this.db.withConn(async (conn) => {
-      const res = await conn.query(
-        `
+    return this.db.querySingleValue({
+      sql: `
           SELECT COUNT(DISTINCT t.id) AS trips_count
           FROM location_item AS li
           JOIN location AS l ON l.id = li.start_location_id
@@ -179,14 +166,9 @@ export class ItemRepository {
           WHERE li.item_id = ?
           AND t.status = ?;
           `,
-        [itemId, TripStatus.Completed],
-      );
-
-      if (res.values && res.values.length > 0) {
-        return res.values[0]['trips_count'];
-      } else {
-        return 0;
-      }
+      values: [itemId, TripStatus.Completed],
+      column: 'trips_count',
+      fallbackValue: 0,
     });
   }
 }
