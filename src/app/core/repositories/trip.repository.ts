@@ -96,17 +96,11 @@ export class TripRepository {
    * @returns La cantidad de viajes completados
    */
   async getCompletedTripsCount(): Promise<number> {
-    return this.db.withConn(async (conn) => {
-      const res = await conn.query(
-        'SELECT COUNT(id) AS completed_trips FROM trip WHERE status = ?',
-        [TripStatus.Completed],
-      );
-
-      if (res.values && res.values.length > 0) {
-        return res.values[0]['completed_trips'];
-      } else {
-        return 0;
-      }
+    return this.db.querySingleValue({
+      sql: 'SELECT COUNT(id) AS completed_trips FROM trip WHERE status = ?',
+      values: [TripStatus.Completed],
+      column: 'completed_trips',
+      fallbackValue: 0,
     });
   }
 }
