@@ -49,12 +49,12 @@
       </app-trip-button>
 
       <div class="buttons-container">
-        <app-trip-button type="secondary" btnClass="flex center gap-2 small">
+        <app-trip-button type="secondary" btnClass="flex center gap-2 small" [disabled]="true">
           <lucide-icon [img]="shareIcon" size="20" />
           Compartir
         </app-trip-button>
 
-        <app-trip-button type="danger" btnClass="flex center gap-2 small">
+        <app-trip-button type="danger" btnClass="flex center gap-2 small" [disabled]="true">
           <lucide-icon [img]="trashIcon" size="20" />
           Eliminar
         </app-trip-button>
