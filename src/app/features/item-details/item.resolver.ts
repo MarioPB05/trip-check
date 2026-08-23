@@ -1,13 +1,14 @@
 import { Item } from '@core/models/item.model';
-import type { ActivatedRouteSnapshot, ResolveFn, RouterStateSnapshot } from '@angular/router';
+import type { ActivatedRouteSnapshot, ResolveFn } from '@angular/router';
 import { inject } from '@angular/core';
 import { ItemService } from '@features/item-details/service/item.service';
 
-export const itemResolver: ResolveFn<Item | null> = (
-  route: ActivatedRouteSnapshot,
-  state: RouterStateSnapshot,
-) => {
+export const itemResolver: ResolveFn<Item | null> = (route: ActivatedRouteSnapshot) => {
   const itemService = inject(ItemService);
-  const itemId = Number(route.paramMap.get('itemId'));
+  const rawItemId = route.paramMap.get('itemId');
+  const itemId = rawItemId ? Number(rawItemId) : NaN;
+
+  if (!Number.isFinite(itemId)) return null;
+
   return itemService.getItemById(itemId);
 };
