@@ -15,7 +15,9 @@
   </div>
 
   <div class="templates-section">
-    <ion-searchbar placeholder="Buscar plantillas..." [formControl]="searchControl" />
+    @if (templates.length > 0) {
+      <ion-searchbar placeholder="Buscar plantillas..." [formControl]="searchControl" />
+    }
 
     <div class="templates-container">
       @for (template of filtratedTemplates; track template.id) {
@@ -36,10 +38,7 @@
       }
 
       @if (templates.length > 0 && filtratedTemplates.length === 0) {
-        <div class="no-results-container">
-          <lucide-icon [img]="Search" size="70" class="no-results-icon" />
-          <p class="no-results-text">No se encontraron plantillas que coincidan con tu búsqueda.</p>
-        </div>
+        <app-search-empty-state target="plantillas" />
       }
     </div>
   </div>

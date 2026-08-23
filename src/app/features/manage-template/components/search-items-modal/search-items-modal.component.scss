@@ -11,15 +11,6 @@
   }
 }
 
-.no-results-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 2rem;
-  padding: 2rem;
-  color: var(--ion-color-medium);
-}
-
 .selected {
   border: 2px solid var(--ion-color-tertiary) !important;
   border-radius: 0.5rem;

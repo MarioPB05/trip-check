@@ -13,6 +13,7 @@ import { ViewWillEnter } from '@ionic/angular';
 import { NavigationToastService } from '@core/services/navigationToast.service';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { debounceTime, distinctUntilChanged } from 'rxjs';
+import { SearchEmptyStateComponent } from '@shared/alerts/search-empty-state/search-empty-state.component';
 
 @Component({
   selector: 'app-template-tab',
@@ -27,6 +28,7 @@ import { debounceTime, distinctUntilChanged } from 'rxjs';
     IonSearchbar,
     RouterLink,
     ReactiveFormsModule,
+    SearchEmptyStateComponent,
   ],
 })
 export class TemplateTabComponent implements ViewWillEnter, OnInit {
@@ -58,6 +60,7 @@ export class TemplateTabComponent implements ViewWillEnter, OnInit {
 
     try {
       this.loadingService.show('Cargando plantillas...');
+      this.searchControl.setValue('');
       this.templateService.getAllTemplates().then((templates) => {
         this.templates = templates;
         this.filtratedTemplates = templates;

@@ -7,7 +7,7 @@ import { TemplateRepository } from '@core/repositories/template.repository';
 export class TemplateService {
   private readonly templateRepository: TemplateRepository = inject(TemplateRepository);
 
-  /*
+  /**
    * Crea una nueva plantilla con el nombre dado y los items especificados.
    *
    * @param name El nombre de la plantilla a crear.
@@ -25,6 +25,13 @@ export class TemplateService {
     }
   }
 
+  /**
+   * Actualiza una plantilla existente con un nuevo nombre y una nueva lista de items.
+   *
+   * @param templateId
+   * @param name
+   * @param quantityByItemId
+   */
   async updateTemplate(
     templateId: number,
     name: string,
@@ -67,7 +74,21 @@ export class TemplateService {
     await Promise.all([...removePromises, ...updatePromises, ...addPromises]);
   }
 
+  /**
+   * Obtiene una plantilla por su ID, incluyendo sus items y cantidades.
+   *
+   * @param id
+   */
   async getTemplateById(id: number) {
     return await this.templateRepository.getTemplateById(id);
+  }
+
+  /**
+   * Elimina una plantilla por su ID.
+   *
+   * @param id
+   */
+  async deleteTemplate(id: number): Promise<void> {
+    await this.templateRepository.deleteTemplate(id);
   }
 }

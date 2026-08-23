@@ -1,4 +1,10 @@
-<ion-modal #modal trigger="open-modal" [initialBreakpoint]="0.5" [breakpoints]="[0, 0.5, 0.75, 1]">
+<ion-modal
+  #modal
+  [isOpen]="isOpen"
+  [initialBreakpoint]="0.5"
+  [breakpoints]="[0, 0.5, 0.75, 1]"
+  (didDismiss)="onDidDismiss()"
+>
   <ng-template>
     <ion-content class="ion-padding">
       <ion-searchbar
@@ -18,10 +24,7 @@
         }
 
         @if (allItems.length === 0 && searchControl.value) {
-          <div class="no-results-container">
-            <lucide-icon [img]="searchIcon" size="70" class="no-results-icon" />
-            <p class="no-results-text">No se encontraron objetos que coincidan con tu búsqueda.</p>
-          </div>
+          <app-search-empty-state target="objetos" />
         }
       </div>
       <ion-infinite-scroll (ionInfinite)="onIonInfinite($event)">

@@ -9,8 +9,15 @@ main > h2 {
   text-align: center;
 }
 
+.name-section {
+  display: flex;
+  gap: 1rem;
+  width: 100%;
+}
+
 .name-input {
   width: 100%;
+  flex: 1;
 }
 
 .item-section {
@@ -28,7 +35,7 @@ main > h2 {
 
 .no-items-container {
   display: grid;
-  grid-template-columns: 80px 1fr;
+  grid-template-columns: 70px 1fr;
   gap: 1.5rem;
   padding: 2rem 1.5rem;
   color: var(--ion-color-medium);
