@@ -49,4 +49,14 @@ export class NumberUtility {
 
     return `${value.toFixed(0)} %`;
   }
+
+  /**
+   * Convierte un número a su versión en posición de ranking en texto, añadiendo el símbolo '# ' al principio.
+   *
+   * @param value - El número a convertir.
+   * @returns El número en formato de posición de ranking.
+   */
+  public static numberToRankingPositionString(value: number): string {
+    return `# ${value}`;
+  }
 }

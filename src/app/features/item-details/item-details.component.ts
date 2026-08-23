@@ -78,6 +78,7 @@ export class ItemDetailsComponent implements ViewWillEnter {
     totalQuantity: '-',
     lostQuantity: '-',
     usageFrequency: '-',
+    rankingPosition: '-',
   });
 
   constructor() {

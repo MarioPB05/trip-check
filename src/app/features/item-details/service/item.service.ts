@@ -16,13 +16,19 @@ export class ItemService {
   }
 
   async getItemStats(itemId: number): Promise<ItemStats> {
-    const [totalQuantity, lostQuantity, completedTripsCount, completedTripsWithItemCount] =
-      await Promise.all([
-        this.itemRepository.getTotalQuantityThisYearInCompletedTrips(itemId),
-        this.itemRepository.getLostQuantityInOngoingOrCompletedTrips(itemId),
-        this.tripRepository.getCompletedTripsCount(),
-        this.itemRepository.getCompletedTripsCountWithItem(itemId),
-      ]);
+    const [
+      totalQuantity,
+      lostQuantity,
+      completedTripsCount,
+      completedTripsWithItemCount,
+      rankingPosition,
+    ] = await Promise.all([
+      this.itemRepository.getTotalQuantityThisYearInCompletedTrips(itemId),
+      this.itemRepository.getLostQuantityInOngoingOrCompletedTrips(itemId),
+      this.tripRepository.getCompletedTripsCount(),
+      this.itemRepository.getCompletedTripsCountWithItem(itemId),
+      this.itemRepository.getRankingPositionByTotalQuantityThisYear(itemId),
+    ]);
 
     const usageFrequency: number | null =
       completedTripsCount > 0 ? (completedTripsWithItemCount * 100) / completedTripsCount : null;
@@ -32,6 +38,8 @@ export class ItemService {
       lostQuantity: NumberUtility.numberToCompactString(lostQuantity),
       usageFrequency:
         usageFrequency === null ? '-' : NumberUtility.numberToPercentageString(usageFrequency),
+      rankingPosition:
+        rankingPosition === 0 ? '-' : NumberUtility.numberToRankingPositionString(rankingPosition),
     };
   }
 }

@@ -18,4 +18,5 @@ export interface ItemStats {
   totalQuantity: string;
   lostQuantity: string;
   usageFrequency: string;
+  rankingPosition: string;
 }

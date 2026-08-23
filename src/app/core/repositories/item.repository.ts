@@ -171,4 +171,52 @@ export class ItemRepository {
       fallbackValue: 0,
     });
   }
+
+  /**
+   * Devuelve el puesto que ocupa un objeto al ordenar todos los objetos por las
+   * unidades llevadas en los viajes completados del año en curso, de mayor a menor.
+   *
+   * La medida del ranking es la misma que calcula
+   * `getTotalQuantityThisYearInCompletedTrips`, agrupada por objeto en lugar de
+   * filtrada por uno: el criterio del año por fecha de inicio y la salvedad de
+   * `'now'` en UTC son los que allí se explican.
+   *
+   * La numeración se hace sobre todos los objetos y el objeto buscado se selecciona
+   * después, en la consulta exterior. Filtrarlo antes de numerar dejaría una sola
+   * fila en el ranking y el puesto sería siempre 1.
+   *
+   * Se usa `ROW_NUMBER()` y no `RANK()`: dos objetos con la misma cantidad reciben
+   * puestos distintos, decididos por orden alfabético. Se acepta ese desempate
+   * arbitrario para no mostrar nunca puestos compartidos, que en una tarjeta que se
+   * ve aislada, sin el ranking al lado, no se entienden.
+   *
+   * Quedan fuera los objetos que suman 0 unidades, porque un puesto entre objetos
+   * que nunca se metieron en la maleta no informa de nada, y los borrados, porque
+   * al competir empujarían al objeto hacia abajo y mostrarían un puesto peor que el
+   * que le corresponde entre los objetos activos.
+   *
+   * @param itemId - El id del objeto.
+   * @returns El puesto en el ranking, o 0 si el objeto no tiene puesto: no existe un
+   * puesto 0, así que ese valor señala la ausencia de datos.
+   */
+  getRankingPositionByTotalQuantityThisYear(itemId: number): Promise<number> {
+    return this.db.querySingleValue({
+      sql: `
+          SELECT rank_position
+          FROM (
+            SELECT li.item_id, ROW_NUMBER() OVER (ORDER BY SUM(quantity) DESC, i.name ASC) AS rank_position
+            FROM location_item AS li
+            JOIN location AS l ON l.id = li.start_location_id
+            JOIN trip AS t ON t.id = l.trip_id
+            JOIN item AS i ON i.id = li.item_id
+            WHERE t.status = ? AND strftime('%Y', t.trip_start_date) = strftime('%Y', 'now') AND i.deleted = 0
+            GROUP BY li.item_id HAVING SUM(quantity) > 0
+          ) AS ranked_items
+          WHERE ranked_items.item_id = ?;
+          `,
+      values: [TripStatus.Completed, itemId],
+      column: 'rank_position',
+      fallbackValue: 0,
+    });
+  }
 }
