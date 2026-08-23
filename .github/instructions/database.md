@@ -6,11 +6,11 @@
 
 ### Web vs Native behaviour
 
-| Concern | Web | Native |
-| ------- | --- | ------ |
-| Auto-persist | `wrapForAutoPersist()` patches `conn.run`, `conn.execute`, and `conn.query` at startup to apply the internal lock and schedule a debounced `saveToStore()` after writes | No wrapping; data is persisted by the SQLite plugin itself |
-| Locking | Enforced automatically by the patched methods on Web | Not applied; avoid adding manual locking on native |
-| Calling pattern | Repositories call `db.withConn(fn)` — the wrapped methods guarantee locking/persist transparently | Repositories call `db.withConn(fn)` and use `conn.query` / `conn.run` directly |
+| Concern         | Web                                                                                                                                                                     | Native                                                                         |
+| --------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------ |
+| Auto-persist    | `wrapForAutoPersist()` patches `conn.run`, `conn.execute`, and `conn.query` at startup to apply the internal lock and schedule a debounced `saveToStore()` after writes | No wrapping; data is persisted by the SQLite plugin itself                     |
+| Locking         | Enforced automatically by the patched methods on Web                                                                                                                    | Not applied; avoid adding manual locking on native                             |
+| Calling pattern | Repositories call `db.withConn(fn)` — the wrapped methods guarantee locking/persist transparently                                                                       | Repositories call `db.withConn(fn)` and use `conn.query` / `conn.run` directly |
 
 ### Rules for repositories
 

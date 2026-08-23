@@ -285,4 +285,58 @@ export class DatabaseService {
     }
   }
   //endregion
+
+  /**
+   * Ejecuta una consulta SQL que devuelve un único valor de una columna específica.
+   *
+   * Si la consulta no devuelve filas, se devuelve el valor de fallback.
+   *
+   * En cambio, si devuelve una fila cuyo valor es nulo, se lanza un error: una consulta
+   * escalar debe garantizar un valor, y un nulo delata un `COALESCE` olvidado. Se
+   * prefiere fallar de inmediato antes que devolver un fallback que se confundiría
+   * con un dato real.
+   *
+   * También se lanza un error si la columna no existe en el resultado, o si el tipo
+   * del valor no coincide con el del valor de fallback.
+   *
+   * Si la consulta devuelve varias filas, se toma el valor de la primera.
+   *
+   * @param options - Objeto con las opciones de la consulta:
+   *   - sql: La consulta SQL a ejecutar.
+   *   - values: Los valores a sustituir en la consulta (opcional).
+   *   - column: El nombre de la columna de la que se quiere obtener el valor.
+   *   - fallbackValue: El valor a devolver si la consulta no devuelve filas.
+   *
+   * @typeParam T - El tipo del valor devuelto y del valor de fallback.
+   *
+   * @returns El valor de la columna indicada, o el valor de fallback si no hay filas.
+   */
+  public async querySingleValue<T>(options: {
+    sql: string;
+    values?: any[];
+    column: string;
+    fallbackValue: T;
+  }): Promise<T> {
+    const { sql, values, column, fallbackValue } = options;
+
+    return this.withConn(async (conn): Promise<T> => {
+      const res = await conn.query(sql, values);
+
+      if (res.values && res.values.length > 0) {
+        if (!Object.hasOwn(res.values[0], column))
+          throw new Error('The specified column does not exist');
+
+        const value = res.values[0][column];
+
+        if (value === null) throw new Error('The sql must return a non-null value');
+
+        if (typeof value !== typeof fallbackValue)
+          throw new Error('The type of the value does not match the type of the fallback value');
+
+        return value as T;
+      } else {
+        return fallbackValue;
+      }
+    });
+  }
 }

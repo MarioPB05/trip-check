@@ -5,6 +5,7 @@ import { filter } from 'rxjs';
 import { DatabaseService } from '@core/services/database.service';
 import { LoadingService } from '@core/services/loading.service';
 import { FocusManagerService } from '@core/services/focus-manager.service';
+import { environment } from '@environments/environment';
 
 @Component({
   selector: 'app-root',
@@ -36,5 +37,9 @@ export class AppComponent implements OnInit {
     this.loadingService.show('Iniciando base de datos...');
     await this.databaseService.init();
     this.loadingService.hide();
+
+    if (!environment.production) {
+      (window as unknown as { db: DatabaseService }).db = this.databaseService;
+    }
   }
 }

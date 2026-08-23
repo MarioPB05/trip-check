@@ -1,6 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { DatabaseService } from '@core/services/database.service';
-import { CurrentTripDetails, Trip } from '@core/models/trip.model';
+import { CurrentTripDetails, Trip, TripStatus } from '@core/models/trip.model';
 
 @Injectable({ providedIn: 'root' })
 export class TripRepository {
@@ -87,6 +87,20 @@ export class TripRepository {
       );
 
       return (res.values?.map((row) => this.formatDBRowToTrip(row)) as Trip[]) || [];
+    });
+  }
+
+  /**
+   * Cuenta la cantidad de viajes que están como completados.
+   *
+   * @returns La cantidad de viajes completados
+   */
+  async getCompletedTripsCount(): Promise<number> {
+    return this.db.querySingleValue({
+      sql: 'SELECT COUNT(id) AS completed_trips FROM trip WHERE status = ?',
+      values: [TripStatus.Completed],
+      column: 'completed_trips',
+      fallbackValue: 0,
     });
   }
 }

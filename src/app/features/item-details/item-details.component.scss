@@ -1,0 +1,45 @@
+.item-toolbar {
+  display: flex;
+  gap: 1rem;
+  flex-direction: column;
+}
+
+.popover {
+  --width: fit-content;
+  --height: fit-content;
+}
+
+.popover-content::part(scroll) {
+  padding: 0 !important;
+  width: fit-content !important;
+}
+
+.emoji-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100px;
+  height: 100px;
+  padding: 1rem;
+  border: 1px solid var(--ion-color-dark-gray);
+  border-radius: 100%;
+  margin: auto;
+}
+
+.item-toolbar > input {
+  flex-grow: 1;
+  width: 100%;
+}
+
+.buttons-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.stats-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  margin-top: 2.5rem;
+}
