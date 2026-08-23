@@ -34,13 +34,12 @@
       }
     </div>
 
-    <input type="text" [value]="item.name" />
+    <input type="text" [(ngModel)]="this.updatedItemName" />
 
     <app-trip-button
       type="tertiary"
       [fill]="true"
       btnClass="flex center gap-2 small"
-      [disabled]="true"
       (handleClick)="saveChanges()"
     >
       <lucide-icon [img]="saveIcon" size="20" />
