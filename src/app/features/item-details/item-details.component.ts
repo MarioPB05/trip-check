@@ -1,10 +1,10 @@
 import {
   Component,
-  computed,
   CUSTOM_ELEMENTS_SCHEMA,
   effect,
   ElementRef,
   inject,
+  input,
   signal,
   viewChild,
 } from '@angular/core';
@@ -18,8 +18,7 @@ import {
   IonToolbar,
   ViewWillEnter,
 } from '@ionic/angular/standalone';
-import { ActivatedRoute, Router } from '@angular/router';
-import { toSignal } from '@angular/core/rxjs-interop';
+import { Router } from '@angular/router';
 import { Item, ItemStats } from '@core/models/item.model';
 import { TripButtonComponent } from '@shared/components/trip-button/trip-button.component';
 import { LucideAngularModule, Save, Share, Trash2 } from 'lucide-angular';
@@ -54,18 +53,13 @@ import { ErrorModalService } from '@core/services/errorModal.service';
 })
 export class ItemDetailsComponent implements ViewWillEnter {
   private readonly router = inject(Router);
-  private readonly route = inject(ActivatedRoute);
   private readonly itemService = inject(ItemService);
   private readonly emojiService = inject(EmojiService);
   private readonly errorModalService = inject(ErrorModalService);
-  private readonly data = toSignal(this.route.data);
 
   private picker: Picker | null = null;
 
-  protected item = computed(() => {
-    const d = this.data();
-    return (d?.['item'] as Item | null) ?? null;
-  });
+  protected item = input.required<Item>();
   protected readonly saveIcon = Save;
   protected readonly shareIcon = Share;
   protected readonly trashIcon = Trash2;
@@ -144,12 +138,8 @@ export class ItemDetailsComponent implements ViewWillEnter {
 
   private async loadItemStats(): Promise<void> {
     try {
-      const item = this.item();
-
-      if (item) {
-        const itemStats = await this.itemService.getItemStats(item.id);
-        this.itemStats.set(itemStats);
-      }
+      const itemStats = await this.itemService.getItemStats(this.item().id);
+      this.itemStats.set(itemStats);
     } catch (error) {
       const errorMessage: ErrorInterface = {
         ...UnknownError,

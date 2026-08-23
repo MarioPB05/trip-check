@@ -10,85 +10,83 @@
 <ion-content [fullscreen]="true" class="ion-padding">
   @let item = this.item();
 
-  @if (item) {
-    <div class="item-toolbar">
-      <ion-popover
-        trigger="click-trigger"
-        triggerAction="click"
-        class="popover"
-        alignment="center"
-        #popover
-      >
-        <ng-template>
-          <ion-content class="popover-content">
-            <div #popoverContent></div>
-          </ion-content>
-        </ng-template>
-      </ion-popover>
+  <div class="item-toolbar">
+    <ion-popover
+      trigger="click-trigger"
+      triggerAction="click"
+      class="popover"
+      alignment="center"
+      #popover
+    >
+      <ng-template>
+        <ion-content class="popover-content">
+          <div #popoverContent></div>
+        </ion-content>
+      </ng-template>
+    </ion-popover>
 
-      <div class="emoji-container" id="click-trigger">
-        @let selectedEmojiUrl = this.selectedEmojiUrl();
-        @if (selectedEmojiUrl !== null) {
-          <img [ngSrc]="selectedEmojiUrl" width="55" height="55" alt="" priority />
-        } @else {
-          <img [ngSrc]="item.emojiUrl" width="55" height="55" alt="" priority />
-        }
-      </div>
+    <div class="emoji-container" id="click-trigger">
+      @let selectedEmojiUrl = this.selectedEmojiUrl();
+      @if (selectedEmojiUrl !== null) {
+        <img [ngSrc]="selectedEmojiUrl" width="55" height="55" alt="" priority />
+      } @else {
+        <img [ngSrc]="item.emojiUrl" width="55" height="55" alt="" priority />
+      }
+    </div>
 
-      <input type="text" [value]="item.name" />
+    <input type="text" [value]="item.name" />
 
-      <app-trip-button
-        type="tertiary"
-        [fill]="true"
-        btnClass="flex center gap-2 small"
-        [disabled]="true"
-        (handleClick)="saveChanges()"
-      >
-        <lucide-icon [img]="saveIcon" size="20" />
-        Guardar Cambios
+    <app-trip-button
+      type="tertiary"
+      [fill]="true"
+      btnClass="flex center gap-2 small"
+      [disabled]="true"
+      (handleClick)="saveChanges()"
+    >
+      <lucide-icon [img]="saveIcon" size="20" />
+      Guardar Cambios
+    </app-trip-button>
+
+    <div class="buttons-container">
+      <app-trip-button type="secondary" btnClass="flex center gap-2 small" [disabled]="true">
+        <lucide-icon [img]="shareIcon" size="20" />
+        Compartir
       </app-trip-button>
 
-      <div class="buttons-container">
-        <app-trip-button type="secondary" btnClass="flex center gap-2 small" [disabled]="true">
-          <lucide-icon [img]="shareIcon" size="20" />
-          Compartir
-        </app-trip-button>
-
-        <app-trip-button type="danger" btnClass="flex center gap-2 small" [disabled]="true">
-          <lucide-icon [img]="trashIcon" size="20" />
-          Eliminar
-        </app-trip-button>
-      </div>
+      <app-trip-button type="danger" btnClass="flex center gap-2 small" [disabled]="true">
+        <lucide-icon [img]="trashIcon" size="20" />
+        Eliminar
+      </app-trip-button>
     </div>
+  </div>
 
-    <div class="stats-container">
-      <h4>Estadísticas</h4>
+  <div class="stats-container">
+    <h4>Estadísticas</h4>
 
-      @let itemStats = this.itemStats();
+    @let itemStats = this.itemStats();
 
-      <app-stat-card
-        title="Posición en el ranking"
-        description="El puesto del objeto por cantidad total llevada en los viajes de este año"
-        [value]="itemStats.rankingPosition"
-      />
+    <app-stat-card
+      title="Posición en el ranking"
+      description="El puesto del objeto por cantidad total llevada en los viajes de este año"
+      [value]="itemStats.rankingPosition"
+    />
 
-      <app-stat-card
-        title="Cantidad total"
-        description="La cantidad total llevada en todos los viajes de este año"
-        [value]="itemStats.totalQuantity"
-      />
+    <app-stat-card
+      title="Cantidad total"
+      description="La cantidad total llevada en todos los viajes de este año"
+      [value]="itemStats.totalQuantity"
+    />
 
-      <app-stat-card
-        title="Frecuencia de uso"
-        description="La frecuencia con la que usas el objeto en tus viajes"
-        [value]="itemStats.usageFrequency"
-      />
+    <app-stat-card
+      title="Frecuencia de uso"
+      description="La frecuencia con la que usas el objeto en tus viajes"
+      [value]="itemStats.usageFrequency"
+    />
 
-      <app-stat-card
-        title="Cantidad perdida"
-        description="La cantidad de unidades perdidas a lo largo de todos tus viajes"
-        [value]="itemStats.lostQuantity"
-      />
-    </div>
-  }
+    <app-stat-card
+      title="Cantidad perdida"
+      description="La cantidad de unidades perdidas a lo largo de todos tus viajes"
+      [value]="itemStats.lostQuantity"
+    />
+  </div>
 </ion-content>
