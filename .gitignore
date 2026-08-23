@@ -70,3 +70,5 @@ testem.log
 Thumbs.db
 
 www
+
+/src/assets/db/TripCheckTesting.db
