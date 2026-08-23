@@ -35,10 +35,10 @@ export class NumberUtility {
   /**
    * Convierte un número a su versión en porcentaje en texto, añadiendo el símbolo de
    * porcentaje al final.
-   * 
+   *
    * Si el valor es menor que 1 pero mayor que 0, se devuelve '<1 %'.
    * Si el valor es mayor o igual a 1, se devuelve el valor redondeado al entero más cercano seguido de ' %'.
-   * 
+   *
    * @param value - El número a convertir.
    * @returns El número en formato de porcentaje.
    */
