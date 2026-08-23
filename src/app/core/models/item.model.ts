@@ -20,3 +20,9 @@ export interface ItemStats {
   usageFrequency: string;
   rankingPosition: string;
 }
+
+export interface ItemUpdate {
+  name?: string;
+  emojiCode?: string;
+  deleted?: boolean;
+}

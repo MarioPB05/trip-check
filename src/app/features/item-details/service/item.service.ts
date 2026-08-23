@@ -1,5 +1,5 @@
 import { inject, Injectable } from '@angular/core';
-import { ItemStats } from '@core/models/item.model';
+import { ItemStats, ItemUpdate } from '@core/models/item.model';
 import { NumberUtility } from '@core/utilities/number.utility';
 import { ItemRepository } from '@core/repositories/item.repository';
 import { TripRepository } from '@core/repositories/trip.repository';
@@ -41,5 +41,9 @@ export class ItemService {
       rankingPosition:
         rankingPosition === 0 ? '-' : NumberUtility.numberToRankingPositionString(rankingPosition),
     };
+  }
+
+  updateItem(itemId: number, updatedItem: ItemUpdate): Promise<void> {
+    return this.itemRepository.updateItem(itemId, updatedItem);
   }
 }

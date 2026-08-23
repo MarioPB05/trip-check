@@ -1,6 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { DatabaseService } from '@core/services/database.service';
-import { Item, ItemWithUsages } from '@core/models/item.model';
+import { Item, ItemWithUsages, ItemUpdate } from '@core/models/item.model';
 import { EmojiService } from '@core/services/emoji.service';
 import { TripStatus } from '@core/models/trip.model';
 
@@ -217,6 +217,37 @@ export class ItemRepository {
       values: [TripStatus.Completed, itemId],
       column: 'rank_position',
       fallbackValue: 0,
+    });
+  }
+
+  updateItem(itemId: number, updatedItem: ItemUpdate): Promise<void> {
+    return this.db.withConn(async (conn) => {
+      const updates: string[] = [];
+      const values: (string | number)[] = [];
+
+      if (updatedItem.name !== undefined) {
+        updates.push('name = ?');
+        values.push(updatedItem.name);
+      }
+
+      if (updatedItem.emojiCode !== undefined) {
+        updates.push('emoji_code = ?');
+        values.push(updatedItem.emojiCode);
+      }
+
+      if (updatedItem.deleted !== undefined) {
+        updates.push('deleted = ?');
+        values.push(updatedItem.deleted ? 1 : 0);
+      }
+
+      if (updates.length === 0) {
+        return; // No hay actualizaciones que realizar
+      }
+
+      values.push(itemId); // Agregar el itemId al final de los valores
+
+      const sql = `UPDATE item SET ${updates.join(', ')} WHERE id = ?`;
+      await conn.run(sql, values);
     });
   }
 }

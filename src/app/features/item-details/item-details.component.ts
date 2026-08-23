@@ -5,6 +5,7 @@ import {
   ElementRef,
   inject,
   input,
+  linkedSignal,
   signal,
   viewChild,
 } from '@angular/core';
@@ -29,8 +30,11 @@ import { EmojiService } from '@core/services/emoji.service';
 import { StatCardComponent } from '@shared/components/stat-card/stat-card.component';
 import { ItemService } from './service/item.service';
 import { ErrorInterface } from '@core/interfaces/error.interface';
-import { UnknownError } from '@core/consts/error.consts';
+import { ServerError, UnknownError, ValidationError } from '@core/consts/error.consts';
 import { ErrorModalService } from '@core/services/errorModal.service';
+import { FormsModule } from '@angular/forms';
+import { ToastService } from '@core/services/toast.service';
+import { LoadingService } from '@core/services/loading.service';
 
 @Component({
   selector: 'app-item-details',
@@ -48,6 +52,7 @@ import { ErrorModalService } from '@core/services/errorModal.service';
     IonPopover,
     NgOptimizedImage,
     StatCardComponent,
+    FormsModule,
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
@@ -55,6 +60,8 @@ export class ItemDetailsComponent implements ViewWillEnter {
   private readonly router = inject(Router);
   private readonly itemService = inject(ItemService);
   private readonly emojiService = inject(EmojiService);
+  private readonly toastService = inject(ToastService);
+  private readonly loadingService = inject(LoadingService);
   private readonly errorModalService = inject(ErrorModalService);
 
   private picker: Picker | null = null;
@@ -64,6 +71,8 @@ export class ItemDetailsComponent implements ViewWillEnter {
   protected readonly shareIcon = Share;
   protected readonly trashIcon = Trash2;
 
+  protected updatedItemName = linkedSignal<string>(() => this.item().name);
+  protected selectedEmojiCode = signal<string | undefined>(undefined);
   protected selectedEmojiUrl = signal<string | null>(null);
   protected popover = viewChild<IonPopover>('popover');
   protected popoverContent = viewChild<ElementRef<HTMLDivElement>>('popoverContent');
@@ -98,6 +107,7 @@ export class ItemDetailsComponent implements ViewWillEnter {
               return;
             }
 
+            this.selectedEmojiCode.set(emojiCode);
             const emojiUrl = this.emojiService.getEmojiUrl(emojiCode);
 
             // Try fetch the emoji url to check if it exists
@@ -151,8 +161,40 @@ export class ItemDetailsComponent implements ViewWillEnter {
     }
   }
 
-  saveChanges() {
-    // TODO: Save changes to the item
-    this.router.navigate(['/tabs/items']);
+  async saveChanges() {
+    const item = this.item();
+    const updatedName = this.updatedItemName().trim();
+
+    if (updatedName.length === 0) {
+      const errorMessage: ErrorInterface = {
+        ...ValidationError,
+        message: 'El nombre del objeto no puede estar vacío.',
+      };
+
+      await this.errorModalService.show(errorMessage);
+      return;
+    }
+
+    try {
+      await this.loadingService.show('Guardando cambios...');
+
+      await this.itemService.updateItem(item.id, {
+        name: updatedName,
+        emojiCode: this.selectedEmojiCode(),
+      });
+    } catch (error) {
+      const errorMessage: ErrorInterface = {
+        ...ServerError,
+        message: 'No se pudieron guardar los cambios. Por favor, inténtalo de nuevo más tarde.',
+      };
+
+      await this.errorModalService.show(errorMessage);
+      return;
+    } finally {
+      this.loadingService.hide();
+    }
+
+    await this.router.navigate(['/tabs/items']);
+    void this.toastService.show('Cambios guardados correctamente', 'success');
   }
 }
